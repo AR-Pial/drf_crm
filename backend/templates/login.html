@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+	<h3 class="text-center py-2 py-lg-4">Log In</h3>
+		
+	<div class="col-10 col-lg-6 mx-auto bg-light p-2 p-lg-4 rounded">
+
+		<form class="px-3 py-2" method="POST" action="{% url 'login' %}">
+			{% csrf_token %}
+			<div class="mb-3">
+				{{form.username|as_crispy_field}}
+			</div>
+			<div class="mb-3">
+				{{form.password|as_crispy_field}}
+			</div>
+			<button type="submit" class="btn btn-primary">Login</button>
+		</form>
+		{% if form.non_field_errors %}
+			<p class="px-3 py-2 text-danger">Please enter a correct email and password. Note that both fields may be case-sensitive.</p>
+		{% endif %}
+	</div>
+			
+{% endblock %}
