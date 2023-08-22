@@ -23,3 +23,7 @@ ul {
 body{
 	background-color: #EFEFEF !important;
 }
+
+#open_sidebar {
+	width: fit-content !important;
+  }

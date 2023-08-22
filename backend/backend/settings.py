@@ -41,12 +41,17 @@ INSTALLED_APPS = [
     'rest_framework',
     'account',
     'crispy_forms',
+    'corsheaders',
     'crispy_bootstrap4',
+    'deal',
+    'webpack_loader',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -57,6 +62,7 @@ MIDDLEWARE = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
 ROOT_URLCONF = 'backend.urls'
 TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
+
 
 TEMPLATES = [
     {
@@ -133,10 +139,28 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+WEBPACK_LOADER = {
+  'DEFAULT': {
+    'CACHE': not DEBUG,
+    'BUNDLE_DIR_NAME': 'webpack_bundles/',
+    'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+    'POLL_INTERVAL': 0.1,
+    'TIMEOUT': None,
+    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+  }
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    # Add more allowed origins as needed
+]

@@ -5,9 +5,26 @@ from .forms import CustomAuthenticationForm,CustomUserCreationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.models import User
 from .models import UserProfile
 
+from .serializers import UserSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 # Create your views here.
+
+class AgentsListView(APIView):
+    def get(self, request):
+        agents = User.objects.filter(groups__name='agent')  # Modify based on your model structure
+        serializer = UserSerializer(agents, many=True)
+        return Response(serializer.data)
+
+class ManagersListView(APIView):
+    def get(self, request):
+        managers = User.objects.filter(groups__name='manager')  # Modify based on your model structure
+        serializer = UserSerializer(managers, many=True)
+        return Response(serializer.data)
 
 def user_login(request):
     if request.method == 'POST':
@@ -22,7 +39,7 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 # Redirect to a success page after login
-                return redirect('home')  # Replace 'home' with the URL name of your home page
+                return redirect('dashboard')  # Replace 'home' with the URL name of your home page
             
       
         else:
@@ -82,5 +99,5 @@ def user_logout(request):
         return redirect('login')
 
 @login_required
-def home(request):
-    return render(request,'home.html')
+def dashboard(request):
+    return render(request,'dashboard.html')

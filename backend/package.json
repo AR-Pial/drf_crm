@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
+  }
+}

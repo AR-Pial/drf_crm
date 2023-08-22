@@ -1,0 +1,26 @@
+<template>
+	<div class="row">
+		<div id="open_sidebar" class="col-2  d-lg-none">
+			<svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>
+		</div>
+		<div class="col ">
+			<ul class="d-flex m-0 p-0">
+				<li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
+				<a class="ms-auto me-2" href="/logout">Logout</a> <br>
+			</ul>
+			
+		</div>
+	</div>
+  </template>
+  
+  <script>
+  export default {
+
+  }
+  </script>
+  
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
+  <style scoped>
+
+  </style>
+  
