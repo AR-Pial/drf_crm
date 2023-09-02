@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
 ROOT_URLCONF = 'backend.urls'
@@ -102,6 +105,12 @@ DATABASES = {
 
 
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+
+# Specify the authentication backend
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,8 +168,12 @@ WEBPACK_LOADER = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     # Add more allowed origins as needed
 ]
+
+
+

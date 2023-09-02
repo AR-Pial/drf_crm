@@ -31,25 +31,26 @@
 			  </tr>
 			</thead>
 			<tbody>
-				{% for user_profile in user_profiles %}
-					<tr>
-						<td>{{user_profile.full_name}}</td>
-						<td> {% if user_profile.types == "admin" %}
-								Admin
-							{% elif user_profile.types == "manager" %}
-								Manager
-							{% elif user_profile.types == "agent" %}
-								Agent
-							{% elif user_profile.types == "member" %}
-								Member
-							{% endif %}
-							
-						</td>
-						<td>{{user_profile.department}}</td>
-						<td><a href="#">view details</a></td>
-				  	</tr>
-				{% endfor %}
-
+				{% if user_profiles %}
+					{% for user_profile in user_profiles %}
+						<tr>
+							<td>{{user_profile.full_name}}</td>
+							<td> {% if user_profile.types == "admin" %}
+									Admin
+								{% elif user_profile.types == "manager" %}
+									Manager
+								{% elif user_profile.types == "agent" %}
+									Agent
+								{% elif user_profile.types == "member" %}
+									Member
+								{% endif %}
+								
+							</td>
+							<td>{{user_profile.department}}</td>
+							<td><a href="#">view details</a></td>
+						</tr>
+					{% endfor %}
+				{% endif %}
 			</tbody>
 		</table>
 	</div>

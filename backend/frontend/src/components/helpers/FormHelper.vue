@@ -1,8 +1,11 @@
 <template>
   <div>
-    <form @submit.prevent="handleFormSubmit">
+    <form @submit.prevent="handleFormSubmit" enctype="multipart/form-data">
 		<slot name="body"></slot>
-      <button type="submit">Submit</button>
+    <div class="text-end me-1 me-lg-2">
+      <slot name="close"></slot>
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
     </form>
   </div>
 </template>

@@ -3,13 +3,6 @@ from django.contrib.auth.models import User
 import uuid
 
 # Create your models here.
-class Document(models.Model):
-    document = models.FileField(upload_to='project_docs/', null=True)
-    created_by = models.OneToOneField(User, on_delete=models.CASCADE,related_name="documents")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = "documents"
 
 class Opportunity(models.Model):
     STAGE_CHOICES = [
@@ -27,10 +20,19 @@ class Opportunity(models.Model):
     project_details = models.TextField(null=True)
     contact_details = models.TextField(null=True)
     additional_info = models.TextField(null=True)
-    documents = models.ManyToManyField('Document', blank=True)
-
+    
     class Meta:
         db_table = "opportunities"
+
+
+class OpportunityDocument(models.Model):
+    document = models.FileField(upload_to='project_docs/', null=True)
+    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name="opportunity_docs")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE,related_name="documents")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "opportunity_documents"
     
     
 class OpportunityComment(models.Model):

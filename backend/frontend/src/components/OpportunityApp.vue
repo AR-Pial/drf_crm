@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="col-11 col-lg-10 mx-auto my-3">
+  <div>
+    <div class="col-11 col-lg-10 mx-auto my-3">
       <table-helper :add-button-name="addButtonName">
         <template v-slot:table-name>
             Opportunities
@@ -8,6 +8,7 @@
         <template v-slot:header>
           <th>Name</th>
           <th>Stage</th>
+          <th>Details</th>
           <th>Action</th>
         </template>
 
@@ -15,14 +16,21 @@
           <tr v-for="opportunity in opportunities" :key="opportunity.id">
             <td>{{ opportunity.name }}</td>
             <td>{{ opportunity.stage }}</td>
-            <td><a href="#">Details</a></td>
+            <td><router-link :to="{name: 'opportunity-details', params: { uuid: opportunity.uuid } }">Details</router-link></td>
+            <td>
+              
+              <a href="" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a> /
+              <a href="#">Delete</a>
+            
+            </td>
           </tr>
         </template>
       </table-helper>
-      <modal-helper :modal-header-name="modalHeader">
+      <modal-helper ref="modalHelper" :modal-header-name="modalHeader" >
         <template v-slot:body>
           <form-helper @submitForm="submitForm">
               <template v-slot:body>
+                
                 <div class="mb-3 row">
                   <div class="col-12 col-md-6">
                     <div class="text-start pb-1" >Opportunity Name:</div>
@@ -73,7 +81,7 @@
                   <div class="col-12 col-lg-6">
                     <input class="d-none form-control" id="fileInput" type="file" ref="fileInput" multiple @change="handleFileChange">
                     <div class="text-start ">
-                      <label class="btn btn-primary text-start p-2"  for="fileInput">
+                      <label class="btn btn-primary text-start py-1 px-2"  for="fileInput">
                         <svg xmlns="http://www.w3.org/2000/svg"  height="1.15em" viewBox="0 0 448 512" style="fill: white;">
                           <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
                         </svg> <span class="px-1"> Add Files</span>
@@ -81,16 +89,29 @@
                     </div> 
                   </div>
                 </div>
-                <div>
-                  <h3>Uploaded Files:</h3>
-                  <ul>
-                    <li  v-for="file in selectedFiles" :key="file.name">{{ file.name }}</li>
-                  </ul>
-                </div>
+                <div class="mb-3 d-flex flex-row flex-wrap">             
+                  <div class="text-start mt-1"><small>Uploaded Files: </small></div>
+                  <div class="text-start"  v-for="(file, index) in selectedFiles" :key="file.name"> 
+                    <span class="badge bg-info text-dark mx-1 my-1">{{ file.name }} 
+                      <button type="button"  class="btn-close" aria-label="Close" @click="removeFile(index)"></button>
+                    </span> 
+                  </div>
+                </div>               
               </template>
+
+              <template v-slot:close>
+                <button type="button" class="btn btn-secondary me-2"  data-bs-dismiss="modal">Close</button>
+              </template>
+
           </form-helper>
         </template>
       </modal-helper>
+
+      <edit-modal-helper ref="editModalHelper" :edit-modal-header-name="editModalHelper">
+        <template v-slot:body>
+              ok
+        </template>
+      </edit-modal-helper>
 
        
       
@@ -100,20 +121,22 @@
 </template>
   
   <script>
-  import axios from 'axios';
   import TableHelper from './helpers/TableHelper.vue';
   import ModalHelper from './helpers/ModalHelper.vue';
+  import EditModalHelper from './helpers/EditModalHelper.vue';
   import FormHelper from './helpers/FormHelper.vue';
   export default {
     components: {
         "table-helper": TableHelper,
         "modal-helper": ModalHelper,
+        "edit-modal-helper": EditModalHelper,
         "form-helper": FormHelper,
     },
     data(){
       return {
         addButtonName: "Create Opportunity",
         modalHeader: "Create Opportunity",
+        editModalHelper: "Edit Opportunity",
         opportunities: [],
         opportunity: {
             name: '',
@@ -122,13 +145,12 @@
             company_details: '',
             project_details: '',
             contact_details: '',
-            additional_info: '',
-            
+            additional_info: '',           
         },
         agents: [],    
         managers: [],
-        documents: [],
-        selectedFiles: []
+        selectedFiles: [],
+        // isModalOpen: true,
       }
     },
     methods: {
@@ -139,17 +161,72 @@
         event.target.value = ''
         
       },
-      uploadFiles() {
 
+      removeFile(index) {
+        this.selectedFiles.splice(index, 1);
       },
-      submitForm() {
+      closeModal() {
+        this.$refs.modalHelper.closeModal(); // Call the closeModal method in modal-helper
+      },
+      closeEditModal() {
+        this.$refs.editModalHelper.closeModal(); // Call the closeModal method in modal-helper
+      },
+
+      async submitForm() {
         // console.log("Form submitted")
-        this.documents = this.selectedFiles.slice();
-      
-        console.log('Documents :'+ this.documents);
+        // this.documents = this.selectedFiles.slice();    
+        //console.log('Documents :'+ this.documents);
+        console.log(this.opportunity.name)
+        var formData = new FormData();
+        // Append form fields
+        formData.append('name', this.opportunity.name);
+        formData.append('manager', this.opportunity.manager);
+        formData.append('agent', this.opportunity.agent);
+        formData.append('company_details', this.opportunity.company_details);
+        formData.append('project_details', this.opportunity.project_details);
+        formData.append('contact_details', this.opportunity.contact_details);
+        formData.append('additional_info', this.opportunity.additional_info);
+
+                     
+        this.$axios.post('http://127.0.0.1:8000/deal/opportunity/', formData)
+          .then(response => {
+            console.log('Opportunity created:', response.data);
+
+            if(this.selectedFiles.length === 0){
+              this.closeModal();
+              this.getOpportunities();             
+            }
+
+            else{
+              var documentData = new FormData();
+              documentData.append('opportunity', response.data.id);
+              for (const file of this.selectedFiles) {
+                documentData.append('files[]', file);
+              }
+                      
+              this.$axios.post('http://127.0.0.1:8000/deal/documents/', documentData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                }
+              })
+              .then(response => {
+                console.log('File created:', response.data);
+                this.closeModal();
+                this.getOpportunities();              
+              }).catch(error => {
+                console.error('Error creating opportunity documents:', error);
+              });
+              }
+          
+          })
+          .catch(error => {
+            console.error('Error creating opportunity:', error);
+          });
+                
       },
       async getOpportunities(){
-        await axios.get('http://localhost:8000/deal/opportunity/')
+        
+        await this.$axios.get('http://127.0.0.1:8000/deal/opportunity/')
         .then(response => {
           this.opportunities = response.data
           console.log(response.data)
@@ -161,7 +238,7 @@
       },
       async fetchAgents() {
         try {
-          const response = await axios.get('http://localhost:8000/api/agents'); // Replace with your actual API endpoint
+          const response = await this.$axios.get('http://127.0.0.1:8000/api/agents'); // Replace with your actual API endpoint
           this.agents = response.data;
           console.log(this.agents)
         } catch (error) {
@@ -170,7 +247,7 @@
       },
       async fetchManagers() {
           try {
-            const response = await axios.get('http://localhost:8000/api/managers'); // Replace with your actual API endpoint
+            const response = await this.$axios.get('http://127.0.0.1:8000/api/managers'); // Replace with your actual API endpoint
             this.managers = response.data;
             console.log(this.managers)
           } catch (error) {
@@ -189,6 +266,9 @@
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
-
+.badge .btn-close {
+            padding-top: 3px;
+            font-size: 0.65rem;
+        }
   </style>
   
