@@ -3,8 +3,7 @@
     <form @submit.prevent="handleFormSubmit" enctype="multipart/form-data">
 		<slot name="body"></slot>
     <div class="text-end me-1 me-lg-2">
-      <slot name="close"></slot>
-      <button class="btn btn-primary" type="submit">Submit</button>
+      <slot name="button"></slot>
     </div>
     </form>
   </div>

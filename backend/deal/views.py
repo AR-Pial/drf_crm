@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
+from rest_framework.decorators import action
 
 
 class OpportunityDocumentViewSet(ModelViewSet):
@@ -33,6 +35,8 @@ class OpportunityDocumentViewSet(ModelViewSet):
 class OpportunityViewSet(ModelViewSet):
     queryset = Opportunity.objects.all()
     serializer_class = OpportunitySerializer
+    lookup_field = 'uuid'
+    
 
     def create(self, request, *args, **kwargs):
         print("User : ",request.user)
@@ -42,3 +46,7 @@ class OpportunityViewSet(ModelViewSet):
             request.data['stage'] = 'Assigned'
         request.data._mutable = False
         return super().create(request, *args, **kwargs)
+    
+    
+    
+    

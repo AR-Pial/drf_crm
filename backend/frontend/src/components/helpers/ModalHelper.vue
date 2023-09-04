@@ -10,7 +10,10 @@
 				<div class="modal-body">
 					<slot name="body"></slot>
 				</div>
-	
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button @click="handleSubmit" type="button" class="btn btn-primary">Submit</button>
+				</div>
 			</div>
 			</div>
 		</div>
@@ -32,7 +35,17 @@
 		if (modalBackdrop) {
 			modalBackdrop.remove();
 		}
-    }
+    },
+	handleSubmit() {
+		// If the parent component has the submitForm method, call it
+		if (this.$parent.submitForm) {
+			this.$parent.submitForm();
+		}
+		else {
+		// Otherwise, emit an event to notify the parent component
+			this.$emit('submitForm');
+		}
+	}
   }
 
   };
