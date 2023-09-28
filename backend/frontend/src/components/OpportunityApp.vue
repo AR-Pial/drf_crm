@@ -318,6 +318,15 @@
             this.opportunity.project_details = response.data.project_details
             this.opportunity.additional_info = response.data.additional_info
 
+            this.$axios.get(`http://127.0.0.1:8000/deal/documents/${opportunityUUId}/get_opportunity_documents/`)
+              .then(response => {
+                console.log(response.data)
+
+              }).catch(error => {
+                // Handle any errors that occur during the request.
+                console.error(error);
+              });
+
           })
           .catch(error => {
             // Handle any errors that occur during the request.

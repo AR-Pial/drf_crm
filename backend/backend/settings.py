@@ -66,7 +66,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ROOT_URLCONF = 'backend.urls'
 TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

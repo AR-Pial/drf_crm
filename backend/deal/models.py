@@ -28,7 +28,7 @@ class Opportunity(models.Model):
 class OpportunityDocument(models.Model):
     document = models.FileField(upload_to='project_docs/', null=True)
     opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name="opportunity_docs")
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE,related_name="documents")
+    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name="documents")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

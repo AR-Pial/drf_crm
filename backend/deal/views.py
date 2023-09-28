@@ -7,13 +7,13 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from rest_framework.decorators import action
+from django.http import JsonResponse, HttpResponse
 
 
 class OpportunityDocumentViewSet(ModelViewSet):
     queryset = OpportunityDocument.objects.all()
     serializer_class = OpportunityDocumentSerializer
-    #permission_classes = [IsAuthenticated]
-
+    
     def create(self, request, *args, **kwargs):
         files = request.FILES.getlist('files[]')  # Get the list of uploaded files
         opportunity_id = request.data.get('opportunity')
@@ -31,6 +31,18 @@ class OpportunityDocumentViewSet(ModelViewSet):
             serializer.save()
 
         return Response({'message': 'Files uploaded successfully'}, status=status.HTTP_201_CREATED)
+    
+    @action(detail=True, methods=['GET'], name='get_opportunity_documents')
+    def get_opportunity_documents(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        opportunity = Opportunity.objects.filter(uuid=pk).first()
+        documents = OpportunityDocument.objects.filter(opportunity=opportunity)
+        # serialized_documents = list(documents.values())
+        # return JsonResponse(serialized_documents,safe=False)
+        serializer = self.get_serializer(documents, many=True) 
+        print("documents: ",documents)       
+        return Response(serializer.data)
+        
 
 class OpportunityViewSet(ModelViewSet):
     queryset = Opportunity.objects.all()

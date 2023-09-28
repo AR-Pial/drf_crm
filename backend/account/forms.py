@@ -35,7 +35,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label="Email", required=True)
-
     class Meta:
         model = User
         fields = ['username', 'password']
