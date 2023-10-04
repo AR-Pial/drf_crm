@@ -8,16 +8,18 @@ from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
 from rest_framework.decorators import action
 from django.http import JsonResponse, HttpResponse
+import os
 
 
 class OpportunityDocumentViewSet(ModelViewSet):
     queryset = OpportunityDocument.objects.all()
     serializer_class = OpportunityDocumentSerializer
     
+    
     def create(self, request, *args, **kwargs):
         files = request.FILES.getlist('files[]')  # Get the list of uploaded files
         opportunity_id = request.data.get('opportunity')
-
+        print("files",files)
         print(request.user)
 
         for file in files:
@@ -32,6 +34,19 @@ class OpportunityDocumentViewSet(ModelViewSet):
 
         return Response({'message': 'Files uploaded successfully'}, status=status.HTTP_201_CREATED)
     
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        file_path = instance.document.path
+
+        # Delete the file from the media folder
+        if instance.document and os.path.exists(file_path):
+            os.remove(file_path)
+
+        # Delete the database record
+        instance.delete()
+
+        return Response(status=204)
+    
     @action(detail=True, methods=['GET'], name='get_opportunity_documents')
     def get_opportunity_documents(self, request, *args, **kwargs):
         pk = kwargs['pk']
@@ -39,8 +54,7 @@ class OpportunityDocumentViewSet(ModelViewSet):
         documents = OpportunityDocument.objects.filter(opportunity=opportunity)
         # serialized_documents = list(documents.values())
         # return JsonResponse(serialized_documents,safe=False)
-        serializer = self.get_serializer(documents, many=True) 
-        print("documents: ",documents)       
+        serializer = self.get_serializer(documents, many=True)    
         return Response(serializer.data)
         
 

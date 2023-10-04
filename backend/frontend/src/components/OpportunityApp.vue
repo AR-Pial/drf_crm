@@ -177,14 +177,19 @@
                     </div> 
                   </div>
                 </div>
-                <div class="mb-3 d-flex flex-row flex-wrap">             
-                  <div class="text-start mt-1"><small>Uploaded Files: </small></div>
+                <div class="mb-3 d-flex flex-row flex-wrap">
+                  <div class="text-start mt-1"><small>Files: </small></div>
+                  <div class="text-start"  v-for="file in files" :key="file.id"> 
+                    <span class="badge bg-info text-dark mx-1 my-1">{{ file.document.split('/').pop() }} 
+                      <button type="button"  class="btn-close" aria-label="Close" v-if="file.document" @click="deleteFile(file.id)"></button>
+                    </span> 
+                  </div>
                   <div class="text-start"  v-for="(file, index) in selectedFiles" :key="file.name"> 
                     <span class="badge bg-info text-dark mx-1 my-1">{{ file.name }} 
                       <button type="button"  class="btn-close" aria-label="Close" @click="removeFile(index)"></button>
                     </span> 
                   </div>
-                </div>               
+                </div>              
               </template>
           </form-helper>
         </template>
@@ -228,14 +233,26 @@
         agents: [],    
         managers: [],
         selectedFiles: [],
+        files: [],
         opportunity_uuid: ''
         // isModalOpen: true,
       }
     },
     methods: {
+      async deleteFile(fileId) {
+        try {
+          const response = await this.$axios.delete(`http://127.0.0.1:8000/deal/opportunity_documents/${fileId}/`);
+          // If the deletion is successful, remove the file from the local data
+          if (response.status === 204) {
+            this.files = this.files.filter(file => file.id !== fileId);
+            console.log("ok delete")
+          }
+        } catch (error) {
+          console.error('Error deleting file:', error);
+        }
+      },
       handleFileChange(event) {
         this.selectedFiles.push(...event.target.files);
-
         console.log(this.selectedFiles)
         event.target.value = ''
         
@@ -280,7 +297,7 @@
                 documentData.append('files[]', file);
               }
                       
-              this.$axios.post('http://127.0.0.1:8000/deal/documents/', documentData, {
+              this.$axios.post('http://127.0.0.1:8000/deal/opportunity_documents/', documentData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
                 }
@@ -288,7 +305,8 @@
               .then(response => {
                 console.log('File created:', response.data);
                 this.closeModal();
-                this.getOpportunities();              
+                this.getOpportunities();
+                this.selectedFiles = ""              
               }).catch(error => {
                 console.error('Error creating opportunity documents:', error);
               });
@@ -318,10 +336,11 @@
             this.opportunity.project_details = response.data.project_details
             this.opportunity.additional_info = response.data.additional_info
 
-            this.$axios.get(`http://127.0.0.1:8000/deal/documents/${opportunityUUId}/get_opportunity_documents/`)
+            this.$axios.get(`http://127.0.0.1:8000/deal/opportunity_documents/${opportunityUUId}/get_opportunity_documents/`)
               .then(response => {
                 console.log(response.data)
-
+                this.files = response.data;
+                console.log(this.files)
               }).catch(error => {
                 // Handle any errors that occur during the request.
                 console.error(error);
@@ -350,8 +369,33 @@
         await this.$axios.put(`http://127.0.0.1:8000/deal/opportunity/${uuid}/`,editedOpportunityData) 
         .then(response => {
           console.log(response.data)
-          this.closeEditModal();
-          this.getOpportunities();  
+          
+          if(this.selectedFiles.length === 0){
+              this.closeEditModal();
+              this.getOpportunities();             
+            }
+
+            else{
+              var documentData = new FormData();
+              documentData.append('opportunity', response.data.id);
+              for (const file of this.selectedFiles) {
+                documentData.append('files[]', file);
+              }
+                      
+              this.$axios.post('http://127.0.0.1:8000/deal/opportunity_documents/', documentData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+                }
+              })
+              .then(response => {
+                console.log('File created:', response.data);
+                this.closeEditModal();
+                this.getOpportunities();
+                this.selectedFiles = ""              
+              }).catch(error => {
+                console.error('Error creating opportunity documents:', error);
+              });
+              } 
         })
         .catch(error => {
           console.log(error)
