@@ -6,8 +6,13 @@
       </div>
         
       <div class="col m-0 p-0">
-        <div id="header" class="py-4 bg-light row m-0 bf-info">
-          <app-header></app-header>
+        <div id="header" class="bg-light row m-0 p-0 bf-info">
+          <div class="py-3">
+            <app-header></app-header>
+          </div>
+          <lower-header></lower-header>
+          
+
         </div>
         <router-view/>
       </div>
@@ -20,11 +25,13 @@
 <script>
 import SideBar from './components/SideBar.vue'
 import HeaderApp from './components/HeaderApp.vue'
+import LowerHeader from './components/LowerHeader.vue'
 
 export default {
   components:{
     "sidebar": SideBar,
-    "app-header": HeaderApp
+    "app-header": HeaderApp,
+    "lower-header": LowerHeader
   },
 }
 </script>

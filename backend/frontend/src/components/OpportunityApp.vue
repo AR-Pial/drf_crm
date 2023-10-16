@@ -7,6 +7,7 @@
         </template>
         <template v-slot:header>
           <th>Name</th>
+          <th>Company Name</th>
           <th>Stage</th>
           <th>Details</th>
           <th>Action</th>
@@ -15,6 +16,7 @@
         <template v-slot:body>
           <tr v-for="opportunity in opportunities" :key="opportunity.id">
             <td>{{ opportunity.name }}</td>
+            <td>{{ opportunity.company_name }}</td>
             <td>{{ opportunity.stage }}</td>
             <td><router-link :to="{name: 'opportunity-details', params: { uuid: opportunity.uuid } }">Details</router-link></td>
             <td>
@@ -32,9 +34,13 @@
               <template v-slot:body>
                 
                 <div class="mb-3 row">
-                  <div class="col-12 col-md-6">
+                  <div class="col-12 col-lg-6">
                     <div class="text-start pb-1" >Opportunity Name:</div>
                     <input class="form-control" type="text" v-model="opportunity.name" id="name" name="name" />
+                  </div>
+                  <div class="col-12 col-lg-6">
+                    <div class="text-start pb-1">Company Name:</div>
+                    <input class="form-control" type="text" v-model="opportunity.company_name" id="name" name="company_name" />      
                   </div>
                 </div>
                 <div class="mb-3 row">
@@ -54,7 +60,7 @@
                       <option v-for="agent in agents" :key="agent.id" :value="agent.id">{{ agent.first_name  }} {{ agent.last_name }}</option>
                     </select>
                   </div>
-                </div>
+                </div> 
 
                 <div class="row mb-3">
                   <div class="col-12 col-lg-6">
@@ -108,11 +114,16 @@
               <template v-slot:body>
                 <div class="mb-3 row">
  
-                    <div class="col-12 col-md-6">
+                    <div class="col-12 col-lg-6"> 
                       <div class="text-start pb-1" >Opportunity Name:</div>
                       <input class="form-control" type="text" v-model="opportunity.name" id="name" name="name" />
                     </div>
-
+                </div>
+                <div class="mb-3 row">
+                  <div class="col-12 col-lg-6"> 
+                      <div class="text-start pb-1" >Company Name:</div>
+                      <input class="form-control" type="text" v-model="opportunity.company_name" id="name" name="company_name" />
+                    </div>
                     <div class="col-12 col-md-6">
                       <div class="text-start pb-1" >Stage:</div>
                       <select class="form-select" v-model="opportunity.stage" id="manager" name="manager">
@@ -222,6 +233,7 @@
         opportunities: [],
         opportunity: {
             name: '',
+            company_name: '',
             stage: '',
             manager: '',
             agent: '',
@@ -273,6 +285,7 @@
         var formData = new FormData();
         // Append form fields
         formData.append('name', this.opportunity.name);
+        formData.append('company_name', this.opportunity.company_name);
         formData.append('manager', this.opportunity.manager);
         formData.append('agent', this.opportunity.agent);
         formData.append('company_details', this.opportunity.company_details);
@@ -328,6 +341,7 @@
             // const opportunityss = response.data;
             console.log(response.data)
             this.opportunity.name = response.data.name
+            this.opportunity.company_name = response.data.company_name
             this.opportunity.stage = response.data.stage
             this.opportunity.manager = response.data.manager
             this.opportunity.agent = response.data.agent
@@ -354,9 +368,9 @@
       },
 
       async editSubmitForm(){
-        console.log("Ok editSubmitForm")
         const editedOpportunityData = {
         name: this.opportunity.name,
+        company_name: this.opportunity.company_name,
         stage: this.opportunity.stage,
         manager: this.opportunity.manager,
         agent: this.opportunity.agent,

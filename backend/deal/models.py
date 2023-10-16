@@ -16,6 +16,7 @@ class Opportunity(models.Model):
     manager = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': 'manager'},related_name="manager_opportunity")
     name = models.CharField(max_length=255)
     stage = models.CharField(max_length=25,default="Unassigned")
+    company_name = models.TextField(null=True)
     company_details = models.TextField(null=True)
     project_details = models.TextField(null=True)
     contact_details = models.TextField(null=True)
