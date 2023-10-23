@@ -1,15 +1,18 @@
 <template>
 <div>
-	<div v-if="opportunity">
+  <div v-if="opportunity">
 
     <div class="card mx-2 mx-lg-5 my-5 shadow">
       <h5 class="card-header bg-secondary text-white text-start">Overview</h5>
       <div class="card-body">
-        <p class="text-muted text-dark text-start "> Opportunity Name:  <span class="badge bg-secondary px-2 py-1">{{ opportunity.name }}</span><a class="ms-2" href="#">edit</a></p>
-        <p class="text-muted text-dark text-start "> Manager Name:  <span class="badge bg-secondary px-2 py-1">{{ opportunity.manager_full_name }}</span> <a class="ms-2" href="#">edit</a></p>
-        <p class="text-muted text-dark text-start "> Agent Name:  <span class="badge bg-secondary px-2 py-1">{{ opportunity.agent_full_name }}</span> <a class="ms-2" href="#">edit</a></p>   
-        <p class="text-muted text-dark text-start "> Company Name:  <span class="badge bg-secondary px-2 py-1">{{ opportunity.company_name }}</span> <a class="ms-2" href="#">edit</a></p>
-        <p class="text-muted text-dark text-start " > Stage:  <span class="badge bg-secondary px-2 py-1">{{ opportunity.stage }}</span> <a class="ms-2" href="#">edit</a></p>        
+        <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
+        opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/update_field/`"    
+      />
+        <!-- :data-field-name="'name'" data-url="/deal/opportunity" :data-id="opportunity.uuid" @update:value="updateOpportunityField" -->
+        <EditableBadgeField label="Manager Name" :value="opportunity.manager_full_name" />
+        <EditableBadgeField label="Agent Name" :value="opportunity.agent_full_name" />
+        <EditableBadgeField label="Company Name" :value="opportunity.company_name" />
+        <EditableBadgeField label="Stage" :value="opportunity.stage" />      
       </div>
     </div>
 
@@ -58,8 +61,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import EditableBadgeField from './fields/EditableBadgeField.vue';
 export default {
+  components: {
+    EditableBadgeField,
+  },
   data() {
     return {
       opportunity: null,
@@ -67,14 +73,20 @@ export default {
   },
   created() {
     const uuid = this.$route.params.uuid;
-    axios.get(`/deal/opportunity/${uuid}/`)
+    this.$axios.get(`/deal/opportunity/${uuid}/`)
       .then(response => {
-		console.log(response.data)
+    console.log(response.data)
         this.opportunity = response.data;
       })
       .catch(error => {
         console.error('Error fetching opportunity details:', error);
       });
+  },
+    methods: {
+    updateOpportunityField(newValue,fieldName) {
+      console.log("newValue : " + newValue)
+      this.opportunity[fieldName] = newValue;
+    },
   },
 };
 
@@ -85,4 +97,4 @@ export default {
 <style scoped>
 
 </style>
-	
+  

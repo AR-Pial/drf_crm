@@ -63,15 +63,25 @@ class OpportunityViewSet(ModelViewSet):
     serializer_class = OpportunitySerializer
     lookup_field = 'uuid'
     
+    
+    @action(detail=True, methods=['POST'], name='update_field')
+    def update_field(self, request, *args, **kwargs):
+        opportunity = self.get_object()
+        print(opportunity)
+        field_name = request.data.get('field_name')
+        new_value = request.data.get('new_value')
+        print("field_name : ",field_name)
+        print("new_value : ",new_value)
+        if hasattr(opportunity, field_name):
+            setattr(opportunity, field_name, new_value)
+            opportunity.save()
+            serializer = self.get_serializer(opportunity)  # Pass the serializer class, not the model
+            return Response(serializer.data)
+        else:
+            return Response({'detail': f'Field "{field_name}" does not exist on the Opportunity model.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 
-    def create(self, request, *args, **kwargs):
-        print("User : ",request.user)
-        agent = request.data.get('agent')
-        request.data._mutable = True
-        if agent:
-            request.data['stage'] = 'Assigned'
-        request.data._mutable = False
-        return super().create(request, *args, **kwargs)
     
     
     

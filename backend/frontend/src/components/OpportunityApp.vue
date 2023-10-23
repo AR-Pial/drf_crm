@@ -129,6 +129,7 @@
                       <select class="form-select" v-model="opportunity.stage" id="manager" name="manager">
                         <option value="Unassigned">Unassigned</option>
                         <option value="Assigned">Assigned</option>
+                        <option value="Lead">Lead</option>
                         <option value="Unsuccessful">Unsuccessful</option>
                         <option value="Successful">Successful</option>
                         
@@ -253,7 +254,7 @@
     methods: {
       async deleteFile(fileId) {
         try {
-          const response = await this.$axios.delete(`http://127.0.0.1:8000/deal/opportunity_documents/${fileId}/`);
+          const response = await this.$axios.delete(`/opportunity_documents/${fileId}/`);
           // If the deletion is successful, remove the file from the local data
           if (response.status === 204) {
             this.files = this.files.filter(file => file.id !== fileId);
@@ -294,7 +295,7 @@
         formData.append('additional_info', this.opportunity.additional_info);
 
                      
-        this.$axios.post('http://127.0.0.1:8000/deal/opportunity/', formData)
+        this.$axios.post('/deal/opportunity/', formData)
           .then(response => {
             console.log('Opportunity created:', response.data);
 
@@ -310,7 +311,7 @@
                 documentData.append('files[]', file);
               }
                       
-              this.$axios.post('http://127.0.0.1:8000/deal/opportunity_documents/', documentData, {
+              this.$axios.post('/deal/opportunity_documents/', documentData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
                 }
@@ -335,7 +336,7 @@
       async opportunity_edit(opportunityUUId) {
         console.log("opportunity_id = " + opportunityUUId)
         this.opportunity_uuid = opportunityUUId
-        this.$axios.get(`http://127.0.0.1:8000/deal/opportunity/${opportunityUUId}/`)
+        this.$axios.get(`/deal/opportunity/${opportunityUUId}/`)
           .then(response => {
             // Handle the response here. The specific opportunity will be in response.data.
             // const opportunityss = response.data;
@@ -350,7 +351,7 @@
             this.opportunity.project_details = response.data.project_details
             this.opportunity.additional_info = response.data.additional_info
 
-            this.$axios.get(`http://127.0.0.1:8000/deal/opportunity_documents/${opportunityUUId}/get_opportunity_documents/`)
+            this.$axios.get(`/deal/opportunity_documents/${opportunityUUId}/get_opportunity_documents/`)
               .then(response => {
                 console.log(response.data)
                 this.files = response.data;
@@ -380,7 +381,7 @@
         additional_info: this.opportunity.additional_info, 
         }
         let uuid = this.opportunity_uuid
-        await this.$axios.put(`http://127.0.0.1:8000/deal/opportunity/${uuid}/`,editedOpportunityData) 
+        await this.$axios.put(`/deal/opportunity/${uuid}/`,editedOpportunityData) 
         .then(response => {
           console.log(response.data)
           
@@ -396,7 +397,7 @@
                 documentData.append('files[]', file);
               }
                       
-              this.$axios.post('http://127.0.0.1:8000/deal/opportunity_documents/', documentData, {
+              this.$axios.post('/deal/opportunity_documents/', documentData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
                 }
@@ -418,7 +419,7 @@
       },
       async getOpportunities(){
         
-        await this.$axios.get('http://127.0.0.1:8000/deal/opportunity/')
+        await this.$axios.get('/deal/opportunity/')
         .then(response => {
           this.opportunities = response.data
           console.log(response.data)
@@ -430,7 +431,7 @@
       },
       async fetchAgents() {
         try {
-          const response = await this.$axios.get('http://127.0.0.1:8000/api/agents'); // Replace with your actual API endpoint
+          const response = await this.$axios.get('/api/agents'); // Replace with your actual API endpoint
           this.agents = response.data;
           console.log(this.agents)
         } catch (error) {
@@ -439,7 +440,7 @@
       },
       async fetchManagers() {
           try {
-            const response = await this.$axios.get('http://127.0.0.1:8000/api/managers'); // Replace with your actual API endpoint
+            const response = await this.$axios.get('/api/managers'); // Replace with your actual API endpoint
             this.managers = response.data;
             console.log(this.managers)
           } catch (error) {
