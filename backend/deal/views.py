@@ -62,8 +62,7 @@ class OpportunityViewSet(ModelViewSet):
     queryset = Opportunity.objects.all()
     serializer_class = OpportunitySerializer
     lookup_field = 'uuid'
-    
-    
+
     @action(detail=True, methods=['POST'], name='update_field')
     def update_field(self, request, *args, **kwargs):
         opportunity = self.get_object()

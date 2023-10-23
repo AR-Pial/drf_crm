@@ -6,7 +6,7 @@
       <h5 class="card-header bg-secondary text-white text-start">Overview</h5>
       <div class="card-body">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
-        opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/update_field/`"    
+        opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
       />
         <!-- :data-field-name="'name'" data-url="/deal/opportunity" :data-id="opportunity.uuid" @update:value="updateOpportunityField" -->
         <EditableBadgeField label="Manager Name" :value="opportunity.manager_full_name" />

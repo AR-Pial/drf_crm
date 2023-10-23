@@ -62,7 +62,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 
 				try {
 					console.log(this.editedValue);
-				 await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
+				 	await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
 					this.editing = false;
 				} catch (error) {
 					console.error(error);
