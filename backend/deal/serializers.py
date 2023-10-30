@@ -11,6 +11,8 @@ class OpportunityDocumentSerializer(ModelSerializer):
 class OpportunitySerializer(ModelSerializer):
    manager_full_name = serializers.CharField(source='manager.profile.full_name', read_only=True)
    agent_full_name = serializers.CharField(source='agent.profile.full_name', read_only=True)
+   manager_user_id = serializers.CharField(source='manager.id', read_only=True)
+   agent_user_id = serializers.CharField(source='agent.id', read_only=True)
    class Meta:
       model = Opportunity  
       fields = '__all__'

@@ -34,7 +34,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 		mixins: [EditFieldMixin],
 		props: {
 			label: String,
-			value: String,
+			value: String, 
 			opportunityFieldname: String,
     		editUrl: String,
 		},

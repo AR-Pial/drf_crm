@@ -9,10 +9,10 @@
         opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
       />
         <!-- :data-field-name="'name'" data-url="/deal/opportunity" :data-id="opportunity.uuid" @update:value="updateOpportunityField" -->
-        <EditableBadgeField label="Manager Name" :value="opportunity.manager_full_name" />
-        <EditableBadgeField label="Agent Name" :value="opportunity.agent_full_name" />
+        <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" :optionUrl="`/api/managers`"/>
+        <EditableBadgeSelect label="Agent Name" :valueName="opportunity.agent_full_name" />
         <EditableBadgeField label="Company Name" :value="opportunity.company_name" />
-        <EditableBadgeField label="Stage" :value="opportunity.stage" />      
+        <EditableBadgeSelect label="Stage" :valueName="opportunity.stage" />      
       </div>
     </div>
 
@@ -62,9 +62,11 @@
 
 <script>
 import EditableBadgeField from './fields/EditableBadgeField.vue';
+import EditableBadgeSelect from './fields/EditableBadgeSelect.vue';
 export default {
   components: {
     EditableBadgeField,
+    EditableBadgeSelect
   },
   data() {
     return {
