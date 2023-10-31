@@ -7,10 +7,17 @@
       <div class="card-body">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
         opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
-      />
-        <!-- :data-field-name="'name'" data-url="/deal/opportunity" :data-id="opportunity.uuid" @update:value="updateOpportunityField" -->
-        <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" :optionUrl="`/api/managers`"/>
-        <EditableBadgeSelect label="Agent Name" :valueName="opportunity.agent_full_name" />
+        />
+        <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" 
+         :optionUrl="`/api/managers`" opportunityFieldname="manager" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        />
+
+        <EditableBadgeSelect label="Agent Name" :value="opportunity.agent_user_id" :valueName="opportunity.agent_full_name" 
+         :optionUrl="`/api/agents`" opportunityFieldname="agent" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        />
+
+
+        <!-- <EditableBadgeSelect label="Agent Name" :valueName="opportunity.agent_full_name" /> -->
         <EditableBadgeField label="Company Name" :value="opportunity.company_name" />
         <EditableBadgeSelect label="Stage" :valueName="opportunity.stage" />      
       </div>
@@ -77,8 +84,9 @@ export default {
     const uuid = this.$route.params.uuid;
     this.$axios.get(`/deal/opportunity/${uuid}/`)
       .then(response => {
-    console.log(response.data)
+        console.log(response.data)
         this.opportunity = response.data;
+        console.log(this.opportunity)
       })
       .catch(error => {
         console.error('Error fetching opportunity details:', error);
@@ -89,6 +97,10 @@ export default {
       console.log("newValue : " + newValue)
       this.opportunity[fieldName] = newValue;
     },
+    updateOpportunitySelect(newValue,fieldName){
+      console.log("newValue : " + newValue)
+      this.opportunity[fieldName] = newValue;
+    }
   },
 };
 

@@ -5,17 +5,21 @@
 				<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></p>  
 				<a class="ms-2" href="#" @click="toggleEdit">edit</a>
 			</div>
-			<div v-else class=" my-1">
-				<select v-model="editedValue">
-					<option v-for="option in options" :value="option.id">{{ option.first_name }} {{ option.last_name }}</option>
-				</select>
-				<span>
-				<a class="ms-2" href="#" @click="saveValue">
-					<i class="fas fa-check"></i> <!-- Check icon for saving -->
-				</a>
-				<a class="ms-2" href="#" @click="cancelEdit">
-					<i class="fas fa-times"></i> <!-- Cancel icon for canceling -->
-				</a>
+			<div v-else class="d-flex my-1">
+				<label class="" for="">{{ label }}: </label>
+				<div class="">
+					<select class="form-select form-select-sm" v-model="editedValue">
+						<option v-for="option in options" :value="option.id">{{ option.first_name }} {{ option.last_name }}</option>
+					</select>
+				</div>
+
+				<span class="d-flex">
+					<a class="ms-2" href="#" @click="saveValue">
+						<i class="fas fa-check"></i> <!-- Check icon for saving -->
+					</a>
+					<a class="ms-2" href="#" @click="cancelEdit">
+						<i class="fas fa-times"></i> <!-- Cancel icon for canceling -->
+					</a>
 				</span>
 			</div>
 		</div>
@@ -23,13 +27,17 @@
 </template>
 
 <script>
+import EditFieldMixin from '@/mixins/editFieldMixin.js';
 	export default{
-
+		mixins: [EditFieldMixin],
 		props:{
 			label: String,
 			value: String,
-			valueName: String, 
+			valueName: String,
+			opportunityFieldname: String,
+    		editUrl: String,
 			optionUrl: String,
+			Fieldname: String,
 		},
 		data(){
 			return{
@@ -46,8 +54,21 @@
 					this.editing = true;
 				}
 			},
+			async saveValue() {
+				console.log(this.editedValue);
+				try {
+					await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
+					this.editing = false;
+				} catch (error) {
+					console.error(error);
+				}
+			},
 			cancelEdit(){
 				this.editing = false;
+				this.editedValue = this.value;
+			},
+			editSuccess(){
+				location.reload();
 			},
 			async fetchOptions(){
 				try {

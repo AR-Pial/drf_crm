@@ -61,7 +61,6 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 				console.log(this.editedValue);
 
 				try {
-					console.log(this.editedValue);
 				 	await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
 					this.editing = false;
 				} catch (error) {
@@ -72,6 +71,9 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			cancelEdit() {
 				this.editing = false;
 				this.editedValue = this.value;
+			},
+			editSuccess(){
+				this.$emit('update:value', this.editedValue,this.opportunityFieldname);
 			},
 		}
 	};

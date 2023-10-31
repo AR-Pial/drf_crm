@@ -8,7 +8,7 @@ export default {
 
         if (response.status === 200) {
           // Success!
-          this.$emit('update:value', newValue,fieldname);
+          this.editSuccess();
         } else {
           // Something went wrong
           console.error(response);
