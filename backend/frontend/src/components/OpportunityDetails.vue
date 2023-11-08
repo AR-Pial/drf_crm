@@ -6,14 +6,14 @@
       <h5 class="card-header bg-secondary text-white text-start">Overview</h5>
       <div class="card-body">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
-        opportunityFieldname="name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
+        opportunityFieldname="name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
         />
         <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" 
-         :optionUrl="`/api/managers`" opportunityFieldname="manager" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        @update:value="updateOpportunityField" :optionUrl="`/api/managers`" opportunityFieldname="manager" fieldName="manager_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
 
         <EditableBadgeSelect label="Agent Name" :value="opportunity.agent_user_id" :valueName="opportunity.agent_full_name" 
-         :optionUrl="`/api/agents`" opportunityFieldname="agent" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        @update:value="updateOpportunityField" :optionUrl="`/api/agents`" opportunityFieldname="agent" fieldName="agent_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
 
 
@@ -93,14 +93,17 @@ export default {
       });
   },
     methods: {
-    updateOpportunityField(newValue,fieldName) {
-      console.log("newValue : " + newValue)
-      this.opportunity[fieldName] = newValue;
+    updateOpportunityField(newValue,fieldName,valueName=null) {
+      console.log(fieldName)
+      if(valueName){
+        console.log(valueName)
+        this.opportunity[fieldName] = valueName;
+      }
+      else{
+        this.opportunity[fieldName] = newValue;
+      }
+
     },
-    updateOpportunitySelect(newValue,fieldName){
-      console.log("newValue : " + newValue)
-      this.opportunity[fieldName] = newValue;
-    }
   },
 };
 

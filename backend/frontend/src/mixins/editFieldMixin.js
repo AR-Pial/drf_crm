@@ -8,7 +8,7 @@ export default {
 
         if (response.status === 200) {
           // Success!
-          this.editSuccess();
+          this.editSuccess(response.data);
         } else {
           // Something went wrong
           console.error(response);

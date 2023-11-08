@@ -9,7 +9,7 @@
 				<label class="" for="">{{ label }}: </label>
 				<div class="">
 					<select class="form-select form-select-sm" v-model="editedValue">
-						<option v-for="option in options" :value="option.id">{{ option.first_name }} {{ option.last_name }}</option>
+						<option v-for="option in options" :value="option.id" >{{ option.first_name }} {{ option.last_name }}</option>
 					</select>
 				</div>
 
@@ -37,12 +37,14 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			opportunityFieldname: String,
     		editUrl: String,
 			optionUrl: String,
-			Fieldname: String,
+			fieldName: String,
+			
 		},
 		data(){
 			return{
 				editing: false,
 				editedValue: this.value,
+				editedValueName: this.valueName,
 				options: [],
 			}
 		},
@@ -55,7 +57,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 				}
 			},
 			async saveValue() {
-				console.log(this.editedValue);
+	
 				try {
 					await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
 					this.editing = false;
@@ -66,9 +68,16 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			cancelEdit(){
 				this.editing = false;
 				this.editedValue = this.value;
+				this.editedValueName = this.valueName;
 			},
-			editSuccess(){
-				location.reload();
+			editSuccess(obj=null){
+				// location.reload();
+				console.log(obj)
+				if(obj){
+					this.editedValueName = obj[this.fieldName];
+				}
+
+				this.$emit('update:value', this.editedValue,this.fieldName, this.editedValueName);
 			},
 			async fetchOptions(){
 				try {
