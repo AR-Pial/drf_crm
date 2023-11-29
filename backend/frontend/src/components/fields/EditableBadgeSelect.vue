@@ -9,7 +9,7 @@
 				<label class="" for="">{{ label }}: </label>
 				<div class="">
 					<select class="form-select form-select-sm" v-model="editedValue">
-						<option v-for="option in options" :value="option.id" >{{ option.first_name }} {{ option.last_name }}</option>
+						<option v-for="option in options" :value="option.id" >{{ option.first_name }} {{ option.last_name }} {{ option.label }}</option>
 					</select>
 				</div>
 
@@ -37,8 +37,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			opportunityFieldname: String,
     		editUrl: String,
 			optionUrl: String,
-			fieldName: String,
-			
+			fieldName: String,			
 		},
 		data(){
 			return{
@@ -80,12 +79,27 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 				this.$emit('update:value', this.editedValue,this.fieldName, this.editedValueName);
 			},
 			async fetchOptions(){
-				try {
+
+				if (this.fieldName === 'stage') {
+					this.options = [
+						{ id: 'Unassigned', label: 'Unassigned' },
+						{ id: 'Assigned', label: 'Assigned' },
+						{ id: 'Lead', label: 'Lead' },
+						{ id: 'Unsuccessful', label: 'Unsuccessful' },
+						{ id: 'Successful', label: 'Successful' },
+					];
+        		}
+				else{
+					try {
 					const response = await this.$axios.get(this.optionUrl);
 					this.options = response.data; 
-				} catch (error) {
-					console.error(error);
-      			}
+					console.log(this.options);
+					} catch (error) {
+						console.error(error);
+					}
+
+				}
+
 			}
 		},
 		mounted() {

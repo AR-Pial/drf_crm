@@ -16,10 +16,11 @@
         @update:value="updateOpportunityField" :optionUrl="`/api/agents`" opportunityFieldname="agent" fieldName="agent_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
 
-
         <!-- <EditableBadgeSelect label="Agent Name" :valueName="opportunity.agent_full_name" /> -->
-        <EditableBadgeField label="Company Name" :value="opportunity.company_name" />
-        <EditableBadgeSelect label="Stage" :valueName="opportunity.stage" />      
+        <EditableBadgeField label="Company Name"  :value="opportunity.company_name" @update:value="updateOpportunityField"
+        opportunityFieldname="company_name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"/>
+        <EditableBadgeSelect label="Stage" :value="opportunity.stage" :valueName="opportunity.stage" 
+        @update:value="updateOpportunityField" opportunityFieldname="stage" fieldName="stage" :editUrl="`/deal/opportunity/${opportunity.uuid}/`" />      
       </div>
     </div>
 

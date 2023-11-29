@@ -131,8 +131,7 @@
                         <option value="Assigned">Assigned</option>
                         <option value="Lead">Lead</option>
                         <option value="Unsuccessful">Unsuccessful</option>
-                        <option value="Successful">Successful</option>
-                        
+                        <option value="Successful">Successful</option>                   
                       </select>
                     </div>
 
