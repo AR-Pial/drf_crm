@@ -68,8 +68,8 @@
                     <textarea class="form-control" rows="4" v-model="opportunity.company_details" id="company_details" name="company_details"></textarea>      
                   </div>
                   <div class="col-12 col-lg-6">
-                    <div class="text-start pb-1">Project Details:</div>
-                    <textarea class="form-control" rows="4" v-model="opportunity.project_details" id="project_details" name="project_details"></textarea>      
+                    <div class="text-start pb-1">Opportunity Details:</div>
+                    <textarea class="form-control" rows="4" v-model="opportunity.opportunity_details" id="opportunity_details" name="opportunity_details"></textarea>      
                   </div>
                 </div>
 
@@ -161,8 +161,8 @@
                     <textarea class="form-control" rows="4" v-model="opportunity.company_details" id="company_details" name="company_details"></textarea>      
                   </div>
                   <div class="col-12 col-lg-6">
-                    <div class="text-start pb-1">Project Details:</div>
-                    <textarea class="form-control" rows="4" v-model="opportunity.project_details" id="project_details" name="project_details"></textarea>      
+                    <div class="text-start pb-1">Opportunity Details:</div>
+                    <textarea class="form-control" rows="4" v-model="opportunity.opportunity_details" id="opportunity_details" name="opportunity_details"></textarea>      
                   </div>
                 </div>
 
@@ -234,7 +234,7 @@
             manager: '',
             agent: '',
             company_details: '',
-            project_details: '',
+            opportunity_details: '',
             contact_details: '',
             additional_info: '',           
         },
@@ -285,7 +285,7 @@
         formData.append('manager', this.opportunity.manager);
         formData.append('agent', this.opportunity.agent);
         formData.append('company_details', this.opportunity.company_details);
-        formData.append('project_details', this.opportunity.project_details);
+        formData.append('opportunity_details', this.opportunity.opportunity_details);
         formData.append('contact_details', this.opportunity.contact_details);
         formData.append('additional_info', this.opportunity.additional_info);
 
@@ -343,7 +343,7 @@
             this.opportunity.agent = response.data.agent
             this.opportunity.company_details = response.data.company_details
             this.opportunity.contact_details = response.data.contact_details
-            this.opportunity.project_details = response.data.project_details
+            this.opportunity.opportunity_details = response.data.opportunity_details
             this.opportunity.additional_info = response.data.additional_info
 
             this.$axios.get(`/deal/opportunity_documents/${opportunityUUId}/get_opportunity_documents/`)
@@ -372,7 +372,7 @@
         agent: this.opportunity.agent,
         company_details: this.opportunity.company_details,
         contact_details: this.opportunity.contact_details,
-        project_details: this.opportunity.project_details,
+        opportunity_details: this.opportunity.opportunity_details,
         additional_info: this.opportunity.additional_info, 
         }
         let uuid = this.opportunity_uuid

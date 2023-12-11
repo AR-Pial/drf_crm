@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class=" text-muted text-dark text-start">
+		<div class="text-muted text-dark text-start">
 			<div v-if="!editing" class="d-flex">
 				<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></p>  
 				<a class="ms-2" href="#" @click="toggleEdit">edit</a>

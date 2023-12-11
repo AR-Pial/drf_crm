@@ -19,12 +19,18 @@ class Opportunity(models.Model):
     stage = models.CharField(max_length=25,default="Unassigned")
     company_name = models.TextField(null=True)
     company_details = models.TextField(null=True)
-    project_details = models.TextField(null=True)
+    opportunity_details = models.TextField(null=True)
     contact_details = models.TextField(null=True)
     additional_info = models.TextField(null=True)
     
     class Meta:
         db_table = "opportunities"
+
+    def save(self, *args, **kwargs):
+        # Check if the agent is set and the stage is not already set
+        if self.agent and self.stage == "Unassigned":
+            self.stage = "Assigned"
+        super(Opportunity, self).save(*args, **kwargs)
 
 
 class OpportunityDocument(models.Model):

@@ -24,17 +24,19 @@
       </div>
     </div>
 
-    <div v-if="opportunity.project_details" class="card mx-2 mx-lg-5 my-5 shadow">
+    <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details"/>
+
+    <div class="card mx-2 mx-lg-5 my-5 shadow">
       <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
-        Project Details
+        Opportunity Details
         <a class="text-white ms-auto" href="">Edit</a>
       </h5>
       <div class="card-body">
-        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.project_details }}</p>        
+        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.opportunity_details }}</p>        
       </div>
     </div>
 
-    <div v-if="opportunity.company_details" class="card mx-2 mx-lg-5 my-5 shadow">
+    <div  class="card mx-2 mx-lg-5 my-5 shadow">
       <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
         Company Details
         <a class="text-white ms-auto" href="">Edit</a>
@@ -44,7 +46,7 @@
       </div>
     </div>
 
-    <div v-if="opportunity.contact_details" class="card mx-2 mx-lg-5 my-5 shadow">
+    <div  class="card mx-2 mx-lg-5 my-5 shadow">
       <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
         Contact Details
         <a class="text-white ms-auto" href="">Edit</a>
@@ -54,7 +56,7 @@
       </div>
     </div>
 
-    <div v-if="opportunity.additional_info" class="card mx-2 mx-lg-5 my-5 shadow">
+    <div  class="card mx-2 mx-lg-5 my-5 shadow">
       <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
         Additional Info
         <a class="text-white ms-auto" href="">Edit</a>
@@ -71,10 +73,12 @@
 <script>
 import EditableBadgeField from './fields/EditableBadgeField.vue';
 import EditableBadgeSelect from './fields/EditableBadgeSelect.vue';
+import EditableCardField from './fields/EditableCardField.vue';
 export default {
   components: {
     EditableBadgeField,
-    EditableBadgeSelect
+    EditableBadgeSelect,
+    EditableCardField
   },
   data() {
     return {
