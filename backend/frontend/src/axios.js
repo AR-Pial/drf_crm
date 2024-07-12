@@ -4,9 +4,13 @@ const instance = axios.create();
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 instance.defaults.withCredentials = true;
+const authToken = localStorage.getItem('authToken');
 
 instance.defaults.xsrfCookieName = "csrftoken"
 instance.defaults.xsrfHeaderName = "X-CSRFToken"
+if (authToken) {
+  instance.defaults.headers.common['Authorization'] = `Token ${authToken}`;
+}
 
 instance.interceptors.response.use(
   (response) => {

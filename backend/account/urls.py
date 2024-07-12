@@ -1,7 +1,7 @@
 from django.urls import path
 
 from account import views
-from .views import AgentsListView, ManagersListView
+from .views import AgentsListView, ManagersListView, UserProfileView
 
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
 	path('',views.dashboard, name="dashboard"),
     path('api/agents', AgentsListView.as_view(), name='agents-list'),
     path('api/managers', ManagersListView.as_view(), name='managers-list'),
+	path('api/get_user_profile/', UserProfileView.as_view(), name='get_user_profile'),
 ]

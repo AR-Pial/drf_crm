@@ -3,21 +3,21 @@
 		<div class="text-muted text-dark text-start">
 			<div v-if="!editing" class="d-flex">
 				<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></p>  
-				<a class="ms-2" href="#" @click="toggleEdit">edit</a>
+				<a class="ms-2 cursor-pointer"  @click="toggleEdit">edit</a>
 			</div>
 			<div v-else class="d-flex my-1">
 				<label class="" for="">{{ label }}: </label>
 				<div class="">
 					<select class="form-select form-select-sm" v-model="editedValue">
-						<option v-for="option in options" :value="option.id" >{{ option.first_name }} {{ option.last_name }} {{ option.label }}</option>
+						<option v-for="option in options" :key="option.id" :value="option.id" >{{ option.first_name }} {{ option.last_name }} {{ option.label }}</option>
 					</select>
 				</div>
 
 				<span class="d-flex">
-					<a class="ms-2" href="#" @click="saveValue">
+					<a class="ms-2 cursor-pointer"  @click="saveValue">
 						<i class="fas fa-check"></i> <!-- Check icon for saving -->
 					</a>
-					<a class="ms-2" href="#" @click="cancelEdit">
+					<a class="ms-2 cursor-pointer"  @click="cancelEdit">
 						<i class="fas fa-times"></i> <!-- Cancel icon for canceling -->
 					</a>
 				</span>
@@ -71,7 +71,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			},
 			editSuccess(obj=null){
 				// location.reload();
-				console.log(obj)
+				console.log(obj +JSON.stringify(obj))
 				if(obj){
 					this.editedValueName = obj[this.fieldName];
 				}
@@ -84,6 +84,8 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 					this.options = [
 						{ id: 'Unassigned', label: 'Unassigned' },
 						{ id: 'Assigned', label: 'Assigned' },
+						{ id: 'Proposal', label: 'Proposal' },
+						{ id: 'Negotiation', label: 'Negotiation' },
 						{ id: 'Lead', label: 'Lead' },
 						{ id: 'Unsuccessful', label: 'Unsuccessful' },
 						{ id: 'Successful', label: 'Successful' },

@@ -5,17 +5,17 @@
 		
 		<div v-if="!editing" class="d-flex">
 			<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ value }}</span></p>  
-			<a class="ms-2" href="#" @click="toggleEdit">edit</a>
+			<a class="ms-2 cursor-pointer" @click="toggleEdit">edit</a>
 		</div>
 		
 		<div v-else class="editable my-1">
 			<input class="" type="text"  v-model="editedValue" />
 			<span>
-				<a class="ms-2" href="#" @click="saveValue">
-				<i class="fas fa-check"></i> <!-- Check icon for saving -->
+				<a class="ms-2 cursor-pointer" @click="saveValue">
+					<i class="fas fa-check"></i> <!-- Check icon for saving -->
 				</a>
-				<a class="ms-2" href="#" @click="cancelEdit">
-				<i class="fas fa-times"></i> <!-- Cancel icon for canceling -->
+				<a class="ms-2 cursor-pointer" @click="cancelEdit">
+					<i class="fas fa-times"></i> <!-- Cancel icon for canceling -->
 				</a>
 			</span>
 		</div>	
@@ -67,14 +67,15 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 					console.error(error);
 				}
 			},
-
+			editSuccess(){
+				this.$emit('update:value', this.editedValue,this.opportunityFieldname);
+			},
+			
 			cancelEdit() {
 				this.editing = false;
 				this.editedValue = this.value;
 			},
-			editSuccess(){
-				this.$emit('update:value', this.editedValue,this.opportunityFieldname);
-			},
+			
 		}
 	};
 </script>

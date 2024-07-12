@@ -11,7 +11,29 @@ from .models import UserProfile
 from .serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        try:
+            profile = request.user.profile  
+            full_name = profile.full_name if profile else ''
+            user_type = profile.types 
+        except UserProfile.DoesNotExist:
+            full_name = 'Super Admin'
+            user_type = 'super_admin'
+
+        user_data = {
+            'full_name': full_name,
+            'user_type': user_type  
+        }
+        return Response(user_data)
 
 class AgentsListView(APIView):
     def get(self, request):
@@ -38,9 +60,8 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 # Redirect to a success page after login
+                token, created = Token.objects.get_or_create(user=user)
                 return redirect('dashboard')  # Replace 'home' with the URL name of your home page
-            
-      
         else:
             context = {
                 "form":form
@@ -99,4 +120,8 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-    return render(request,'dashboard.html')
+    token, _ = Token.objects.get_or_create(user=request.user) 
+    context = {
+        'token': token.key,
+    }
+    return render(request,'dashboard.html',context)

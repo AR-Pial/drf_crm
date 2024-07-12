@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -28,6 +29,12 @@ class CustomUserCreationForm(UserCreationForm):
     department = forms.CharField(label="Department", required=True)
     designation = forms.CharField(label="Designation", required=False)
     employee_id = forms.CharField(label="Employee Id", required=False)
+
+    def clean(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email, username=email).exists():
+            raise ValidationError({"email": "Email Already Exists"})
+        return self.cleaned_data
     
     class Meta:
         model = User

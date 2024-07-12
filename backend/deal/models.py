@@ -8,7 +8,9 @@ class Opportunity(models.Model):
     STAGE_CHOICES = [
         ('Unassigned', 'Unassigned'),
         ('Assigned', 'Assigned'),
-        ('lead', 'Lead'),
+        ('Proposal', 'Proposal'),
+        ('Negotiation', 'Negotiation'),
+        ('Lead', 'Lead'),
         ('Successful', 'Successful'),
         ('Unsuccessful', 'Unsuccessful'),
     ]

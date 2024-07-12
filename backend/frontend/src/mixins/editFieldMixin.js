@@ -1,6 +1,6 @@
 export default {
   methods: {
-    async editField(editUrl,fieldname, newValue) {
+    async editField(editUrl, fieldname, newValue) {
       try {
         const response = await this.$axios.patch(editUrl, {
           [fieldname]: newValue,

@@ -253,7 +253,6 @@
           // If the deletion is successful, remove the file from the local data
           if (response.status === 204) {
             this.files = this.files.filter(file => file.id !== fileId);
-            console.log("ok delete")
           }
         } catch (error) {
           console.error('Error deleting file:', error);

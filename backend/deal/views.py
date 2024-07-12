@@ -63,6 +63,17 @@ class OpportunityViewSet(ModelViewSet):
     serializer_class = OpportunitySerializer
     lookup_field = 'uuid'
 
+    @action(detail=False, methods=['get'], name='agent-opportunities')
+    def agent_opportunities(self, request):
+        # Get opportunities based on the logged-in agent
+        user = self.request.user
+        if user.is_authenticated:
+            agent_opportunities = self.queryset.filter(agent=user)  # Replace 'agent' with your actual field name
+            serializer = self.get_serializer(agent_opportunities, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({'detail': 'Authentication credentials were not provided.'}, status=status.HTTP_401_UNAUTHORIZED)
+
     @action(detail=True, methods=['POST'], name='update_field')
     def update_field(self, request, *args, **kwargs):
         opportunity = self.get_object()

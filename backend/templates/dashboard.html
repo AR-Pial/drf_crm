@@ -22,8 +22,8 @@
 </head>
 <body>
  	
-	<div id="app" class="m-0 p-0">
-				
+	<div id="app" class="m-0 p-0" data-authToken="{{ token }}">
+		
 	</div>
 	{% render_bundle 'app' 'js' %}
 
@@ -42,9 +42,9 @@
 					$("#open_sidebar").toggleClass("d-lg-none");
 					$("#sidebar").toggleClass("d-lg-block");
 					$("#open_sidebar").removeClass("d-none");	
-				  });				
+				});				
 				
-			  });
+			});
 
 			  $("#open_sidebar").click(function() {
 				$("#sidebar").fadeIn(700);

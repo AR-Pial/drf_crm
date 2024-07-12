@@ -7,7 +7,7 @@
       <div class="card-body">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
         opportunityFieldname="name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
-        />
+        /> 
         <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" 
         @update:value="updateOpportunityField" :optionUrl="`/api/managers`" opportunityFieldname="manager" fieldName="manager_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
@@ -24,47 +24,23 @@
       </div>
     </div>
 
-    <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details"/>
+    <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details" @update:fieldValue="updateOpportunityField"
+      opportunityFieldname="opportunity_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+    />
 
-    <div class="card mx-2 mx-lg-5 my-5 shadow">
-      <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
-        Opportunity Details
-        <a class="text-white ms-auto" href="">Edit</a>
-      </h5>
-      <div class="card-body">
-        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.opportunity_details }}</p>        
-      </div>
-    </div>
+    <EditableCardField fieldTitle="Company Details" :fieldValue="opportunity.company_details" @update:fieldValue="updateOpportunityField"
+      opportunityFieldname="company_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+    />
 
-    <div  class="card mx-2 mx-lg-5 my-5 shadow">
-      <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
-        Company Details
-        <a class="text-white ms-auto" href="">Edit</a>
-      </h5>
-      <div class="card-body">
-        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.company_details }}</p>        
-      </div>
-    </div>
+    <EditableCardField fieldTitle="Contact Details" :fieldValue="opportunity.contact_details" @update:fieldValue="updateOpportunityField"
+      opportunityFieldname="contact_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+    />
 
-    <div  class="card mx-2 mx-lg-5 my-5 shadow">
-      <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
-        Contact Details
-        <a class="text-white ms-auto" href="">Edit</a>
-      </h5>
-      <div class="card-body">
-        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.contact_details }}</p>        
-      </div>
-    </div>
+    <EditableCardField fieldTitle="Additional Info" :fieldValue="opportunity.additional_info" @update:fieldValue="updateOpportunityField"
+      opportunityFieldname="additional_info"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+    />
 
-    <div  class="card mx-2 mx-lg-5 my-5 shadow">
-      <h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
-        Additional Info
-        <a class="text-white ms-auto" href="">Edit</a>
-      </h5>
-      <div class="card-body">
-        <p class="text-muted text-dark text-start " style="white-space: pre-wrap;"> {{ opportunity.additional_info }}</p>        
-      </div>
-    </div>
+  
 
   </div>
 </div>
