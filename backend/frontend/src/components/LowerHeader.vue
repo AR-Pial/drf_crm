@@ -7,7 +7,7 @@
             </div>
             <nav aria-label="breadcrumb" class="col-6">
               <ol class="breadcrumb m-0 p-0 d-flex justify-content-end">
-                <li class="breadcrumb-item text-end"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item text-end"><a class="custom-nav" href="#">Dashboard</a></li>
                 <!-- <li class="breadcrumb-item"><a href="#">Library</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Data</li> -->
                 <slot name="breadcrumb"></slot>

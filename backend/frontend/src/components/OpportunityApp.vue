@@ -113,7 +113,6 @@
           <form-helper @editSubmitForm="editSubmitForm">
               <template v-slot:body>
                 <div class="mb-3 row">
- 
                     <div class="col-12 col-lg-6"> 
                       <div class="text-start pb-1" >Opportunity Name:</div>
                       <input class="form-control" type="text" v-model="opportunity.name" id="name" name="name" />
@@ -452,10 +451,10 @@
   </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
-.badge .btn-close {
-            padding-top: 3px;
-            font-size: 0.65rem;
-        }
-  </style>
+<style scoped>
+  .badge .btn-close {
+    padding-top: 3px;
+    font-size: 0.65rem;
+  }
+</style>
   

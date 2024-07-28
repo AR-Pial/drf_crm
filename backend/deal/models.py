@@ -38,7 +38,7 @@ class Opportunity(models.Model):
 class OpportunityDocument(models.Model):
     document = models.FileField(upload_to='project_docs/', null=True)
     opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE, related_name="opportunity_docs")
-    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name="documents")
+    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name="documents_cby")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -52,10 +52,34 @@ class OpportunityComment(models.Model):
     created_by = models.OneToOneField(User, on_delete=models.CASCADE,related_name="created_opportunity_comment")
     modified_by = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True,related_name="modified_opportunity_comment")
     created_at = models.DateTimeField(auto_now_add=True)
-    last_modified_at = models.DateTimeField(null=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "opportunity_comments"
+
+
+class Proposal(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True, editable=False)
+    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE)
+    details = models.TextField(null=True)
+    remarks = models.TextField(null=True)
+    result = models.TextField(null=True)
+    created_by = models.OneToOneField(User, on_delete=models.CASCADE,related_name="created_proposal")
+    modified_by = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True,related_name="modified_proposal")
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "proposals"
+
+class ProposalDocument(models.Model):
+    document = models.FileField(upload_to='project_docs/', null=True)
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE, related_name="proposal_docs")
+    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING,related_name="proposal_cby")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "proposal_documents"
 
     
     

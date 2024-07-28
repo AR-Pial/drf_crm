@@ -7,7 +7,7 @@
 		</div>
 		<div class="col">
 			<ul class="d-flex m-0 p-0 align-items-center">
-				<li><router-link :to="{name: 'dashboard'}">Dashboard</router-link></li>
+				<li><router-link class="custom-nav" :to="{name: 'dashboard'}">Dashboard</router-link></li>
 
 				<li class="nav-item dropdown ms-lg-auto">
                         <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -16,8 +16,8 @@
                             </svg>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end overflow-hidden" aria-labelledby="navbarDropdownMenuLink">
-                            <li class=""><a class="dropdown-item m-0" href="#">Profile</a></li>
-                            <li class=""><a class="dropdown-item m-0" href="/logout">Log out</a></li>
+                            <li class="custom-nav"><a class="dropdown-item m-0" href="#">Profile</a></li>
+                            <li class="custom-nav"><a class="dropdown-item m-0" href="/logout">Log out</a></li>
                         </ul>
                     </li>
 			</ul>

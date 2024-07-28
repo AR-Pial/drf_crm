@@ -9,8 +9,8 @@
 			<div>
 				<ul>
 					<!-- Django URL link -->
-					<a href="/registration">Add User</a>
-					<li><router-link :to="{name: 'opportunity'}">Opportunity</router-link></li>
+					<a class="custom-nav" href="/registration">Add User</a>
+					<li><router-link class="custom-nav" :to="{name: 'opportunity'}">Opportunity</router-link></li>
 					
 					
 				</ul>	

@@ -35,8 +35,7 @@
 		const modalBackdrop = document.querySelector('.modal-backdrop');
 		if (modalBackdrop) {
 			modalBackdrop.remove();
-		}
-		
+		}	
     },
 	handleSubmit() {
 		// If the parent component has the submitForm method, call it

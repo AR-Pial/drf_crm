@@ -8,6 +8,24 @@ a{
 	text-decoration: none !important;
 }
 
+h1,h2,h3,h4,h5,h6,label,th{
+	font-family: "Montserrat", sans-serif !important;
+	font-weight: 700 !important;
+}
+
+span,p,li,td,input,textarea,select,div,a,button{
+	font-family: "Montserrat", sans-serif !important;
+	font-weight: 400 !important;
+}
+
+.custom-nav{
+	font-family: "Roboto", sans-serif !important;
+	font-weight: 500 !important;
+	letter-spacing: .4px !important;
+	font-size: 18px;
+}
+
+
 ul {
     list-style-type: none;
 }
