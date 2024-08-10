@@ -9,6 +9,7 @@ from django.http import Http404
 from rest_framework.decorators import action
 from django.http import JsonResponse, HttpResponse
 import os
+from django.shortcuts import get_object_or_404
 
 
 class OpportunityDocumentViewSet(ModelViewSet):
@@ -19,13 +20,11 @@ class OpportunityDocumentViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         files = request.FILES.getlist('files[]')  # Get the list of uploaded files
         opportunity_id = request.data.get('opportunity')
-        print("files",files)
-        print(request.user)
-
+        opportunity = get_object_or_404(Opportunity, uuid=opportunity_id)
         for file in files:
             serializer = self.get_serializer(data={
                 'document': file,
-                'opportunity': opportunity_id,
+                'opportunity': opportunity.id,
                 'created_by': request.user.id,  # Assuming you want to associate the current user
             })
             
@@ -51,7 +50,7 @@ class OpportunityDocumentViewSet(ModelViewSet):
     def get_opportunity_documents(self, request, *args, **kwargs):
         pk = kwargs['pk']
         opportunity = Opportunity.objects.filter(uuid=pk).first()
-        documents = OpportunityDocument.objects.filter(opportunity=opportunity)
+        documents = OpportunityDocument.objects.filter(opportunity=opportunity).order_by('-created_at')
         # serialized_documents = list(documents.values())
         # return JsonResponse(serialized_documents,safe=False)
         serializer = self.get_serializer(documents, many=True)    

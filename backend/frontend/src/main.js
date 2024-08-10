@@ -5,8 +5,17 @@ import axios from './axios'
 
 const app = createApp(App);
 app.use(router); // Use the router
-const authToken = document.getElementById('app').getAttribute('data-authToken');
-localStorage.setItem('authToken', authToken);
+
+
+await axios.get('/api/get-auth-token/')
+    .then(response => {
+        const authToken = response.data.token;
+        localStorage.setItem('authToken', authToken);
+        app.config.globalProperties.$authToken = authToken;
+    })
+    .catch(error => {
+        console.error('Error fetching auth token:', error);
+    });
 
 await axios.get('/api/get_user_profile/')
     .then(response => {
@@ -22,7 +31,7 @@ await axios.get('/api/get_user_profile/')
         // Handle the error appropriately
     });
 // Add the token and name to the global properties
-app.config.globalProperties.$authToken = authToken;
+// app.config.globalProperties.$authToken = authToken;
 app.config.globalProperties.$axios = axios;
 app.mount('#app');
 

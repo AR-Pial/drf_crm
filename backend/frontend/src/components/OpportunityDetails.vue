@@ -1,8 +1,6 @@
 <template>
 <div>
-  <div v-if="opportunity">
-
-    <div class="mx-2 mx-lg-5 my-3">
+  <div class="mx-2 mx-lg-5 my-3">
       <h3 class="py-2 py-lg-3">Opportunity Pipeline</h3>
         <div class="row">
             <div class="col">
@@ -16,7 +14,9 @@
         </div>
     </div>
 
-    <div class="card mx-2 mx-lg-5 my-5 shadow">
+  <div class="mt-lg-4" v-if="opportunity">
+    <h3 class="py-2 py-lg-3">Opportunity Details</h3>
+    <div class="card mx-2 mx-lg-5 my-3 shadow">
       <h5 class="card-header bg-secondary text-white text-start">Overview</h5>
       <div class="card-body">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
@@ -54,14 +54,33 @@
       opportunityFieldname="additional_info"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
     />
 
-    <div class="mb-3 mb-lg-5">
-      <h4>Documents</h4>
-
+    <div class="mb-3 mb-lg-5 mx-2 mx-lg-5">
+      <div class="row mb-3">
+          <div class="col-12 col-lg-6">
+            <input class="d-none form-control" id="fileInput" type="file" ref="fileInput" multiple @change="handleFileChange">
+            <div class="text-start ">
+              <label class="btn btn-primary text-start py-1 px-2"  for="fileInput">
+                <svg xmlns="http://www.w3.org/2000/svg"  height="1.15em" viewBox="0 0 448 512" style="fill: white;">
+                  <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
+                </svg> <span class="px-1"> Add Files</span>
+              </label> 
+            </div> 
+          </div>
+        </div>
+        <h2>Create django Permission to delete file</h2>
       <div class="mb-3 d-flex flex-row flex-wrap">
-          <div class="text-start mt-1"><small>Files: </small></div>
-          <div class="text-start"  v-for="file in files" :key="file.id"> 
-            <span class="badge bg-info text-dark mx-1 my-1">{{ file.document.split('/').pop() }} 
-              <button type="button"  class="btn-close" aria-label="Close" v-if="file.document" @click="deleteFile(file.id)"></button>
+
+          <div class="text-start mt-1"><h5 class="me-2 mt-2">Files: </h5></div>
+          <!-- <div class="text-start pe-3"  v-for="(file, index) in selectedFiles" :key="file.name"> 
+              <span class="badge bg-info text-dark mx-0 px-0 row align-items-center py-2">
+                <span class="fs-6 text-dark px-0 mx-2">{{ file.name }} </span>  
+                <button type="button"  class="btn-close me-2" aria-label="Close" @click="removeFile(index)"></button>
+              </span> 
+          </div> -->
+          <div class="text-start pe-3 my-2"  v-for="file in files" :key="file.id">
+            <span class="badge bg-info text-dark mx-0 px-0 row align-items-center py-2"> 
+              <a class="fs-6 text-dark px-0 mx-2" :href="file.document" download>{{ file.document.split('/').pop() }}</a>  
+              <button type="button"  class="btn-close me-2" aria-label="Close" v-if="file.document" @click="deleteFile(file.id)"></button>
             </span> 
           </div>
       </div>  
@@ -87,10 +106,12 @@ export default {
     return {
       opportunity: null,
       files: [],
+      selectedFiles: [],
+      opp_uuid: null
     };
   },
   async  created() {
-    const uuid = this.$route.params.uuid;
+    this.opp_uuid = this.$route.params.uuid;
     // this.$axios.get(`/deal/opportunity/${uuid}/`)
     //   .then(response => {
     //     console.log(response.data)
@@ -100,14 +121,14 @@ export default {
     //   .catch(error => {
     //     console.error('Error fetching opportunity details:', error);
     //   });
-    const opportunityUrl = `/deal/opportunity/${uuid}/`;
+    const opportunityUrl = `/deal/opportunity/${this.opp_uuid}/`;
 
   try {
     // Fetch the opportunity details
     this.opportunity = await this.fetchData(opportunityUrl);
 
     // Construct the URL for fetching files based on opportunity details
-    const filesUrl = `/deal/opportunity_documents/${uuid}/get_opportunity_documents/`;
+    const filesUrl = `/deal/opportunity_documents/${this.opp_uuid}/get_opportunity_documents/`;
 
     // Fetch the files
     this.files = await this.fetchData(filesUrl);
@@ -116,7 +137,11 @@ export default {
     console.error('Error fetching data:', error);
   }
   },
+  
     methods: {
+    getFileUrl(path) {
+      return `${window.location.origin}/media/${path}`;
+    },
     updateOpportunityField(newValue,fieldName,valueName=null) {
       console.log(fieldName)
       if(valueName){
@@ -128,6 +153,33 @@ export default {
       }
 
     },
+    handleFileChange(event) {
+      this.selectedFiles = Array.from(event.target.files);
+      this.uploadFiles();
+    },
+    async uploadFiles() {
+      const formData = new FormData();
+      this.selectedFiles.forEach((file, index) => {
+        formData.append(`files[]`, file);
+      });
+      formData.append('opportunity', this.opp_uuid);  // Assuming you have the opportunity UUID in your component
+      console.log("opp_uuid : " + this.opp_uuid);
+
+      try {
+        const response = await this.$axios.post('/deal/opportunity_documents/', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Files uploaded successfully', response.data);
+        this.selectedFiles = []; 
+         // Clear the files array after upload
+        const filesUrl = `/deal/opportunity_documents/${this.opp_uuid}/get_opportunity_documents/`;
+        this.files = await this.fetchData(filesUrl);
+      } catch (error) {
+        console.error('Error uploading files', error);
+      }
+    }
   },
 };
 

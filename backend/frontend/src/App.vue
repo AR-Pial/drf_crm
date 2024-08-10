@@ -11,8 +11,6 @@
             <app-header></app-header>
           </div>
           <lower-header></lower-header>
-          
-
         </div>
         <router-view/>
       </div>

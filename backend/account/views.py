@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 # Create your views here.
 
 class UserProfileView(APIView):
@@ -120,8 +121,14 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-    token, _ = Token.objects.get_or_create(user=request.user) 
-    context = {
-        'token': token.key,
-    }
-    return render(request,'dashboard.html',context)
+    # token, _ = Token.objects.get_or_create(user=request.user) 
+    # context = {
+    #     'token': token.key,
+    # }
+    return render(request,'dashboard.html')
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_auth_token(request):
+    token, created = Token.objects.get_or_create(user=request.user)
+    return Response({'token': token.key})

@@ -189,16 +189,21 @@
                 </div>
                 <div class="mb-3 d-flex flex-row flex-wrap">
                   <div class="text-start mt-1"><small>Files: </small></div>
-                  <div class="text-start"  v-for="file in files" :key="file.id"> 
-                    <span class="badge bg-info text-dark mx-1 my-1">{{ file.document.split('/').pop() }} 
-                      <button type="button"  class="btn-close" aria-label="Close" v-if="file.document" @click="deleteFile(file.id)"></button>
-                    </span> 
-                  </div>
                   <div class="text-start"  v-for="(file, index) in selectedFiles" :key="file.name"> 
                     <span class="badge bg-info text-dark mx-1 my-1">{{ file.name }} 
                       <button type="button"  class="btn-close" aria-label="Close" @click="removeFile(index)"></button>
                     </span> 
                   </div>
+                  <div class="text-start"  v-for="file in files" :key="file.id"> 
+                    <span class="badge bg-info text-dark mx-1 my-1">{{ file.document.split('/').pop() }} 
+                      <button type="button"  class="btn-close" aria-label="Close" v-if="file.document" @click="deleteFile(file.id)"></button>
+                    </span> 
+                  </div>
+                  <!-- <div class="text-start"  v-for="(file, index) in selectedFiles" :key="file.name"> 
+                    <span class="badge bg-info text-dark mx-1 my-1">{{ file.name }} 
+                      <button type="button"  class="btn-close" aria-label="Close" @click="removeFile(index)"></button>
+                    </span> 
+                  </div> -->
                 </div>              
               </template>
           </form-helper>
@@ -389,7 +394,7 @@
               for (const file of this.selectedFiles) {
                 documentData.append('files[]', file);
               }
-                      
+       
               this.$axios.post('/deal/opportunity_documents/', documentData, {
               headers: {
                 'Content-Type': 'multipart/form-data',

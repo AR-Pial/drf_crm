@@ -12,4 +12,5 @@ urlpatterns = [
     path('api/agents', AgentsListView.as_view(), name='agents-list'),
     path('api/managers', ManagersListView.as_view(), name='managers-list'),
 	path('api/get_user_profile/', UserProfileView.as_view(), name='get_user_profile'),
+	path('api/get-auth-token/', views.get_auth_token, name='get-auth-token'),
 ]
