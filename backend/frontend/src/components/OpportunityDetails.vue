@@ -1,14 +1,17 @@
 <template>
 <div>
-  <div class="mx-2 mx-lg-5 my-3">
+  <div v-if="opportunity" class="mx-2 mx-lg-5 my-3">
       <h3 class="py-2 py-lg-3">Opportunity Pipeline</h3>
         <div class="row">
             <div class="col">
-                <div class="progress" style="height: 30px !important;">
-                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Assigned</div>
-                    <div class="progress-bar bg-secondary bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Proposal</div>
-                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Negotiation</div>
-                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Lead</div>
+                <div class="progress rounded-0" style="height: 30px !important;">
+                    <div class="progress-bar bg-secondary border-end border-4 fs-6" :class="opportunity.stage === 'Assigned' ? 'bg-info' : ''" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Assigned</div>
+                    <div class="progress-bar bg-secondary border-end border-4 fs-6" :class="opportunity.stage === 'Proposal' ? 'bg-info' : ''" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                      <router-link class="text-white " :to="{name: 'proposal', params: { uuid: opp_uuid} }">Proposal</router-link>
+                    </div>
+                    <div class="progress-bar bg-secondary border-end border-4 fs-6" :class="opportunity.stage === 'Negotiation' ? 'bg-info' : ''" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Negotiation</div>
+                    <div class="progress-bar bg-secondary border-end border-4 fs-6" :class="opportunity.stage === 'Lead' ? 'bg-info' : ''" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Lead</div>
+                    <div class="progress-bar bg-secondary fs-6" :class="opportunity.stage === 'Successful' || opportunity.stage === 'Unsuccessful' ? 'bg-info' : ''" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Result</div>
                 </div>
             </div>
         </div>
@@ -37,7 +40,7 @@
         @update:value="updateOpportunityField" opportunityFieldname="stage" fieldName="stage" :editUrl="`/deal/opportunity/${opportunity.uuid}/`" />      
       </div>
     </div>
-
+    
     <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details" @update:fieldValue="updateOpportunityField"
       opportunityFieldname="opportunity_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
     />
@@ -67,7 +70,6 @@
             </div> 
           </div>
         </div>
-        <h2>Create django Permission to delete file</h2>
       <div class="mb-3 d-flex flex-row flex-wrap">
 
           <div class="text-start mt-1"><h5 class="me-2 mt-2">Files: </h5></div>
@@ -139,47 +141,60 @@ export default {
   },
   
     methods: {
-    getFileUrl(path) {
-      return `${window.location.origin}/media/${path}`;
-    },
-    updateOpportunityField(newValue,fieldName,valueName=null) {
-      console.log(fieldName)
-      if(valueName){
-        console.log(valueName)
-        this.opportunity[fieldName] = valueName;
-      }
-      else{
-        this.opportunity[fieldName] = newValue;
-      }
-
-    },
-    handleFileChange(event) {
-      this.selectedFiles = Array.from(event.target.files);
-      this.uploadFiles();
-    },
-    async uploadFiles() {
-      const formData = new FormData();
-      this.selectedFiles.forEach((file, index) => {
-        formData.append(`files[]`, file);
-      });
-      formData.append('opportunity', this.opp_uuid);  // Assuming you have the opportunity UUID in your component
-      console.log("opp_uuid : " + this.opp_uuid);
-
-      try {
-        const response = await this.$axios.post('/deal/opportunity_documents/', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+      async deleteFile(fileId) {
+        console.log("delete")
+        try {
+          const response = await this.$axios.delete(`/deal/opportunity_documents/${fileId}/`);
+          // If the deletion is successful, remove the file from the local data
+          if (response.status === 204) {
+            console.log("delete done")
+            this.files = this.files.filter(file => file.id !== fileId);
           }
+        } catch (error) {
+          console.error('Error deleting file:', error);
+        }
+      },
+      getFileUrl(path) {
+        return `${window.location.origin}/media/${path}`;
+      },
+      updateOpportunityField(newValue,fieldName,valueName=null) {
+        console.log(fieldName)
+        if(valueName){
+          console.log(valueName)
+          this.opportunity[fieldName] = valueName;
+        }
+        else{
+          this.opportunity[fieldName] = newValue;
+        }
+
+      },
+      handleFileChange(event) {
+        this.selectedFiles = Array.from(event.target.files);
+        this.uploadFiles();
+      },
+      async uploadFiles() {
+        const formData = new FormData();
+        this.selectedFiles.forEach((file, index) => {
+          formData.append(`files[]`, file);
         });
-        console.log('Files uploaded successfully', response.data);
-        this.selectedFiles = []; 
-         // Clear the files array after upload
-        const filesUrl = `/deal/opportunity_documents/${this.opp_uuid}/get_opportunity_documents/`;
-        this.files = await this.fetchData(filesUrl);
-      } catch (error) {
-        console.error('Error uploading files', error);
+        formData.append('opportunity', this.opp_uuid);  // Assuming you have the opportunity UUID in your component
+        console.log("opp_uuid : " + this.opp_uuid);
+
+        try {
+          const response = await this.$axios.post('/deal/opportunity_documents/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+          console.log('Files uploaded successfully', response.data);
+          this.selectedFiles = []; 
+          // Clear the files array after upload
+          const filesUrl = `/deal/opportunity_documents/${this.opp_uuid}/get_opportunity_documents/`;
+          this.files = await this.fetchData(filesUrl);
+        } catch (error) {
+          console.error('Error uploading files', error);
+        }
       }
-    }
   },
 };
 

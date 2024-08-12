@@ -1,13 +1,13 @@
 <template>
-	<div>
+	<div class="mb-2 mb-lg-3">
 		<div class="text-muted text-dark text-start">
 			<div v-if="!editing" class="d-flex">
-				<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></p>  
+				<span>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></span>  
 				<a class="ms-2 cursor-pointer"  @click="toggleEdit">edit</a>
 			</div>
 			<div v-else class="d-flex my-1">
-				<label class="" for="">{{ label }}: </label>
-				<div class="">
+				<span class="" for="">{{ label }}: </span>
+				<div class="ms-1">
 					<select class="form-select form-select-sm" v-model="editedValue">
 						<option v-for="option in options" :key="option.id" :value="option.id" >{{ option.first_name }} {{ option.last_name }} {{ option.label }}</option>
 					</select>

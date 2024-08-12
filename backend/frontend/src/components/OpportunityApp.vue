@@ -253,7 +253,7 @@
     methods: {
       async deleteFile(fileId) {
         try {
-          const response = await this.$axios.delete(`/opportunity_documents/${fileId}/`);
+          const response = await this.$axios.delete(`/deal/opportunity_documents/${fileId}/`);
           // If the deletion is successful, remove the file from the local data
           if (response.status === 204) {
             this.files = this.files.filter(file => file.id !== fileId);

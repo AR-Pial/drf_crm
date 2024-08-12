@@ -1,15 +1,16 @@
 <template>
 
-<div>
+<div class="mb-2">
 	<div class="text-muted text-dark text-start "> 
 		
 		<div v-if="!editing" class="d-flex">
-			<p>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ value }}</span></p>  
+			<span>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ value }}</span></span>  
 			<a class="ms-2 cursor-pointer" @click="toggleEdit">edit</a>
 		</div>
 		
-		<div v-else class="editable my-1">
-			<input class="" type="text"  v-model="editedValue" />
+		<div v-else class="editable my-1 d-flex">
+			<span>{{ label }}: </span>
+			<input class="ms-1" type="text"  v-model="editedValue" />
 			<span>
 				<a class="ms-2 cursor-pointer" @click="saveValue">
 					<i class="fas fa-check"></i> <!-- Check icon for saving -->

@@ -1,6 +1,6 @@
 <template>
   <div>
-	Proposal
+	This is proposal page
   </div>
 </template>
 

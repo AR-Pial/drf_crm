@@ -36,7 +36,6 @@ class OpportunityDocumentViewSet(ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         file_path = instance.document.path
-
         # Delete the file from the media folder
         if instance.document and os.path.exists(file_path):
             os.remove(file_path)
