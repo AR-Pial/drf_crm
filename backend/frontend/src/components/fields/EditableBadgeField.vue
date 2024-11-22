@@ -1,6 +1,6 @@
 <template>
 
-<div class="mb-2">
+<div class="mb-2 mb-lg-3">
 	<div class="text-muted text-dark text-start "> 
 		
 		<div v-if="!editing" class="d-flex">

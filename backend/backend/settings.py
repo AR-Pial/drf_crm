@@ -88,13 +88,27 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# windows db
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dj_crm',
+#         'USER': 'root',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
+#         'PORT': '3306',  # Usually '3306'
+#         'OPTIONS': {
+#             'sql_mode': 'STRICT_ALL_TABLES',
+#         },
+#     }
+# }
+# linux db
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dj_crm',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'Pilu@Dev3',
         'HOST': 'localhost',  # Usually 'localhost' or '127.0.0.1'
         'PORT': '3306',  # Usually '3306'
         'OPTIONS': {

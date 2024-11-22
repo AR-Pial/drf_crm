@@ -15,8 +15,10 @@ class Opportunity(models.Model):
         ('Unsuccessful', 'Unsuccessful'),
     ]
     uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True, editable=False)
-    agent = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': 'agent'},related_name="agent_opportunity")
-    manager = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': 'manager'},related_name="manager_opportunity")
+    agent = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': 'agent'},related_name="agent_opportunity",null=True, 
+    blank=True )
+    manager = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'groups__name': 'manager'},related_name="manager_opportunity",null=True, 
+    blank=True )
     name = models.CharField(max_length=255)
     stage = models.CharField(max_length=25,default="Unassigned")
     company_name = models.TextField(null=True)
@@ -32,6 +34,8 @@ class Opportunity(models.Model):
         # Check if the agent is set and the stage is not already set
         if self.agent and self.stage == "Unassigned":
             self.stage = "Assigned"
+        elif not self.agent:  
+            self.stage = "Unassigned"
         super(Opportunity, self).save(*args, **kwargs)
 
 
@@ -58,19 +62,22 @@ class OpportunityComment(models.Model):
         db_table = "opportunity_comments"
 
 
+
+
 class Proposal(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, db_index=True, unique=True, editable=False)
-    opportunity = models.ForeignKey(Opportunity, on_delete=models.CASCADE)
+    opportunity = models.ForeignKey(Opportunity,null=True, on_delete=models.CASCADE, to_field='uuid')
+    title = models.CharField(max_length=255, null=True)
     details = models.TextField(null=True)
     remarks = models.TextField(null=True)
-    result = models.TextField(null=True)
-    created_by = models.OneToOneField(User, on_delete=models.CASCADE,related_name="created_proposal")
-    modified_by = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True,related_name="modified_proposal")
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE,related_name="created_proposal_pv")
+    modified_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True,related_name="modified_pv")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True)
 
     class Meta:
         db_table = "proposals"
+
 
 class ProposalDocument(models.Model):
     document = models.FileField(upload_to='project_docs/', null=True)

@@ -25,6 +25,14 @@
 
 </head>
 <body>
+	<script>
+		const token = "{{ token }}";
+		if (token != localStorage.getItem('authToken')){
+			window.location.reload();
+			localStorage.setItem('authToken', token);
+		}
+		
+	</script>
  	
 	<div id="app" class="m-0 p-0">
 	</div>
@@ -35,9 +43,7 @@
 	{% comment %} DataTables {% endcomment %}
 	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
-	<script>	
-		
-		
+	<script>		
 		$(document).ready(function(){
 			let table = new DataTable('#data-table');			
 			$("#close_sidebar").click(function() {

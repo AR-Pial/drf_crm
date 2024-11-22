@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import Opportunity,OpportunityDocument
-from .serializers import OpportunitySerializer,OpportunityDocumentSerializer
+from .models import Opportunity,OpportunityDocument,Proposal
+from .serializers import OpportunitySerializer,OpportunityDocumentSerializer, ProposalSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
@@ -18,14 +18,14 @@ class OpportunityDocumentViewSet(ModelViewSet):
     
     
     def create(self, request, *args, **kwargs):
-        files = request.FILES.getlist('files[]')  # Get the list of uploaded files
+        files = request.FILES.getlist('files[]')  
         opportunity_id = request.data.get('opportunity')
         opportunity = get_object_or_404(Opportunity, uuid=opportunity_id)
         for file in files:
             serializer = self.get_serializer(data={
                 'document': file,
                 'opportunity': opportunity.id,
-                'created_by': request.user.id,  # Assuming you want to associate the current user
+                'created_by': request.user.id,
             })
             
             serializer.is_valid(raise_exception=True)
@@ -75,11 +75,10 @@ class OpportunityViewSet(ModelViewSet):
     @action(detail=True, methods=['POST'], name='update_field')
     def update_field(self, request, *args, **kwargs):
         opportunity = self.get_object()
-        print(opportunity)
         field_name = request.data.get('field_name')
+        print("field_name : ", field_name)
         new_value = request.data.get('new_value')
-        print("field_name : ",field_name)
-        print("new_value : ",new_value)
+        print("new_value : ", new_value)
         if hasattr(opportunity, field_name):
             setattr(opportunity, field_name, new_value)
             opportunity.save()
@@ -89,8 +88,11 @@ class OpportunityViewSet(ModelViewSet):
             return Response({'detail': f'Field "{field_name}" does not exist on the Opportunity model.'}, status=status.HTTP_400_BAD_REQUEST)
     
     
-
-    
+# Proposal
+class ProposalViewSet(ModelViewSet):
+    queryset = Proposal.objects.all()
+    serializer_class = ProposalSerializer
+    lookup_field = 'uuid' 
     
     
     

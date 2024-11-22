@@ -128,6 +128,7 @@ export default {
   try {
     // Fetch the opportunity details
     this.opportunity = await this.fetchData(opportunityUrl);
+    console.log(this.opportunity)
 
     // Construct the URL for fetching files based on opportunity details
     const filesUrl = `/deal/opportunity_documents/${this.opp_uuid}/get_opportunity_documents/`;

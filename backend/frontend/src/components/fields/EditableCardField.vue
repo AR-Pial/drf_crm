@@ -12,14 +12,18 @@
 			</div>
 		</div>
 		<div v-else class="card rounded editable mx-2 mx-lg-5 my-5 shadow">
-			<div class="card-header text-end bg-secondary py-1">
-				<a class="mx-1 mx-lg-2 cursor-pointer text-white" @click="saveValue">
-					<i class="fas fa-check"></i>
-				</a>
-				<a class="mx-1 mx-lg-2 cursor-pointer text-white" @click="cancelEdit">
-					<i class="fas fa-times"></i> 
-				</a>
+			<div class="d-flex bg-secondary justify-content-between align-items-center ps-2 ps-lg-3">
+				<span class="text-white py-1">{{fieldTitle }}</span>
+				<div class="card-header text-end  py-1">
+					<a class="mx-1 mx-lg-2 cursor-pointer text-white" @click="saveValue">
+						<i class="fas fa-check"></i>
+					</a>
+					<a class="ms-1 ms-lg-2 cursor-pointer text-white" @click="cancelEdit">
+						<i class="fas fa-times"></i> 
+					</a>
+				</div>
 			</div>
+		
 			<textarea class="form-control card-body rounded-0" rows="10" type="text"  v-model="editedValue">
 			</textarea>
 			<div class="text-end bg-secondary rounded-bottom">

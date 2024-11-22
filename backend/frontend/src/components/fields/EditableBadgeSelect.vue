@@ -9,6 +9,7 @@
 				<span class="" for="">{{ label }}: </span>
 				<div class="ms-1">
 					<select class="form-select form-select-sm" v-model="editedValue">
+						<option value="">Select</option>
 						<option v-for="option in options" :key="option.id" :value="option.id" >{{ option.first_name }} {{ option.last_name }} {{ option.label }}</option>
 					</select>
 				</div>
@@ -53,6 +54,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 					this.cancelEdit();
 				} else {
 					this.editing = true;
+					console.log("H ValueName: "+ this.valueName)
 				}
 			},
 			async saveValue() {

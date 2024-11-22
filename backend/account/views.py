@@ -69,14 +69,10 @@ def user_login(request):
             }
     
             return render(request,'login.html',context)
-
-
-
     form = CustomAuthenticationForm()
     context = {
         "form":form
-    }
-    
+    }  
     return render(request,'login.html',context)
 
 def registration(request):
@@ -89,6 +85,7 @@ def registration(request):
             if user_type == 'admin':
                 user.is_staff = True
             user.save()
+            token, created = Token.objects.get_or_create(user=user)
 
             phone = form.cleaned_data['phone']
             department = form.cleaned_data['department']
@@ -121,11 +118,11 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-    # token, _ = Token.objects.get_or_create(user=request.user) 
-    # context = {
-    #     'token': token.key,
-    # }
-    return render(request,'dashboard.html')
+    token, _ = Token.objects.get_or_create(user=request.user) 
+    context = {
+        'token': token.key,
+    }
+    return render(request,'dashboard.html',context)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

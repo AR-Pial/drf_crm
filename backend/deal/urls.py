@@ -5,5 +5,6 @@ from .views import *
 router = routers.DefaultRouter()
 router.register('opportunity',OpportunityViewSet)
 router.register('opportunity_documents',OpportunityDocumentViewSet)
+router.register(r'proposal', ProposalViewSet)
 
 urlpatterns = router.urls

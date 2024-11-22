@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import Opportunity, OpportunityDocument
+from .models import Opportunity, OpportunityDocument, Proposal
 
 class OpportunityDocumentSerializer(ModelSerializer):
     
@@ -17,3 +17,19 @@ class OpportunitySerializer(ModelSerializer):
       model = Opportunity  
       fields = '__all__'
       read_only_fields = ('uuid',)
+
+class ProposalSerializer(serializers.ModelSerializer):
+      class Meta:
+            model = Proposal
+            fields = ['uuid', 'opportunity', 'title', 'details', 'remarks'] 
+            read_only_fields = ('uuid',)
+      #    extra_kwargs = {
+      #          'opportunity': {'required': False, 'allow_null': True},
+      #          'created_by': {'required': False, 'allow_null': True},
+      #    }
+      def create(self, validated_data):
+            # Automatically set the 'created_by' to the currently authenticated user
+            user = self.context['request'].user  # Access the authenticated user
+            validated_data['created_by'] = user  
+            validated_data['modified_by'] = user  
+            return super().create(validated_data)

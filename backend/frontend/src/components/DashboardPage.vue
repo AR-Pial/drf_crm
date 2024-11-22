@@ -59,6 +59,7 @@ export default {
     if (this.userType === 'agent') {
       this.getAgentOpportunities();
     }
+    
   },
   mounted() {
     console.log('Name:', this.$user_full_name);

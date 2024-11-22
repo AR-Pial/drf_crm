@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import DashboardPage from './components/DashboardPage.vue';
 import OpportunityApp from './components/OpportunityApp.vue';
 import OpportunityDetails from './components/OpportunityDetails.vue';
-import Proposal from './components/pipeline/Proposal.vue';
+import Proposal from './components/pipeline/proposal/Proposal.vue';
 
 
 
