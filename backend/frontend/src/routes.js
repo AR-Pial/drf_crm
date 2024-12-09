@@ -3,6 +3,7 @@ import DashboardPage from './components/DashboardPage.vue';
 import OpportunityApp from './components/OpportunityApp.vue';
 import OpportunityDetails from './components/OpportunityDetails.vue';
 import Proposal from './components/pipeline/proposal/Proposal.vue';
+import ProposalDetails from './components/pipeline/proposal/ProposalDetails.vue'
 
 
 
@@ -11,7 +12,7 @@ const routes = [
   { path: '/deal/opportunity', name: 'opportunity', component: OpportunityApp},
   { path: '/deal/opportunity/details/:uuid', name: 'opportunity-details', component: OpportunityDetails},
   { path: '/deal/opportunity/proposal/:uuid', name: 'proposal', component: Proposal},
- 
+  { path: '/deal/opportunity/proposal/details/:uuid', name: 'proposal-details', component: ProposalDetails},
 ];
 
 const router = createRouter({

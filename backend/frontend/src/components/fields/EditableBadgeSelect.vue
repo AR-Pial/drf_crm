@@ -1,5 +1,5 @@
 <template>
-	<div class="mb-2 mb-lg-3">
+	<div>
 		<div class="text-muted text-dark text-start">
 			<div v-if="!editing" class="d-flex">
 				<span>{{ label }}: <span class="badge bg-secondary px-2 py-1" >{{ valueName }}</span></span>  
@@ -35,10 +35,10 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			label: String,
 			value: String,
 			valueName: String,
-			opportunityFieldname: String,
+			Fieldname: String,
     		editUrl: String,
 			optionUrl: String,
-			fieldName: String,			
+			option_fieldName: String,			
 		},
 		data(){
 			return{
@@ -60,7 +60,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 			async saveValue() {
 	
 				try {
-					await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
+					await this.editField(this.editUrl, this.Fieldname, this.editedValue);
 					this.editing = false;
 				} catch (error) {
 					console.error(error);
@@ -75,14 +75,14 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 				// location.reload();
 				console.log(obj +JSON.stringify(obj))
 				if(obj){
-					this.editedValueName = obj[this.fieldName];
+					this.editedValueName = obj[this.option_fieldName];
 				}
 
-				this.$emit('update:value', this.editedValue,this.fieldName, this.editedValueName);
+				this.$emit('update:value', this.editedValue,this.option_fieldName, this.editedValueName);
 			},
 			async fetchOptions(){
 
-				if (this.fieldName === 'stage') {
+				if (this.option_fieldName === 'stage') {
 					this.options = [
 						{ id: 'Unassigned', label: 'Unassigned' },
 						{ id: 'Assigned', label: 'Assigned' },

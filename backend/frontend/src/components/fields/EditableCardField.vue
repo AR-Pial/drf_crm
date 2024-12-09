@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div v-if="!editing">
-			<div class="card mx-2 mx-lg-5 my-5 shadow">
+			<div class="card my-1 shadow">
 				<h5 class="card-header bg-secondary text-white text-start d-flex align-items-center">       
 					{{fieldTitle }}
 					<a class="text-white ms-auto cursor-pointer" @click="toggleEdit">Edit</a>
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-else class="card rounded editable mx-2 mx-lg-5 my-5 shadow">
+		<div v-else class="card rounded my-1 editable shadow">
 			<div class="d-flex bg-secondary justify-content-between align-items-center ps-2 ps-lg-3">
 				<span class="text-white py-1">{{fieldTitle }}</span>
 				<div class="card-header text-end  py-1">
@@ -42,7 +42,7 @@ export default {
 	props: {
 		fieldTitle: String,
 		fieldValue: String,
-		opportunityFieldname: String,
+		Fieldname: String,
     	editUrl: String,
 	},
 	data(){
@@ -67,14 +67,14 @@ export default {
 				console.log(this.editedValue);
 
 			try {
-				await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
+				await this.editField(this.editUrl, this.Fieldname, this.editedValue);
 				this.editing = false;
 			} catch (error) {
 				console.error(error);
 			}
 		},
 		editSuccess(){
-				this.$emit('update:fieldValue', this.editedValue,this.opportunityFieldname);
+				this.$emit('update:fieldValue', this.editedValue,this.Fieldname);
 		},
 		cancelEdit() {
 				this.editing = false;

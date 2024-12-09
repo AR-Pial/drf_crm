@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white p-2 p-lg-3 rounded">
+	<div class="bg-white p-2 p-lg-3 rounded shadow">
 		<div class="d-flex mb-1 mb-lg-2">
 			<h5><slot name="table-name"></slot></h5>
 			<button v-if="addButtonName" type="button" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#createModal">

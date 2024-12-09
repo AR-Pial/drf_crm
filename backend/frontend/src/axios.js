@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const instance = axios.create();
+const instance = axios.create({
+  baseURL: process.env.VUE_APP_API_URL,  // Uses the root URL directly
+});
 
 instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 instance.defaults.withCredentials = true;

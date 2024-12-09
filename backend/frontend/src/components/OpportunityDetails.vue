@@ -21,43 +21,44 @@
     <h3 class="py-2 py-lg-3">Opportunity Details</h3>
     <div class="card mx-2 mx-lg-5 my-3 shadow">
       <h5 class="card-header bg-secondary text-white text-start">Overview</h5>
-      <div class="card-body">
+      <div class="card-body d-flex flex-column gap-3">
         <EditableBadgeField label="Opportunity Name" :value="opportunity.name" @update:value="updateOpportunityField"
-        opportunityFieldname="name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
+        Fieldname="name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"    
         /> 
         <EditableBadgeSelect label="Manager Name" :value="opportunity.manager_user_id" :valueName="opportunity.manager_full_name" 
-        @update:value="updateOpportunityField" :optionUrl="`/api/managers`" opportunityFieldname="manager" fieldName="manager_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        @update:value="updateOpportunityField" :optionUrl="`/api/managers`" Fieldname="manager" option_fieldName="manager_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
 
         <EditableBadgeSelect label="Agent Name" :value="opportunity.agent_user_id" :valueName="opportunity.agent_full_name" 
-        @update:value="updateOpportunityField" :optionUrl="`/api/agents`" opportunityFieldname="agent" fieldName="agent_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+        @update:value="updateOpportunityField" :optionUrl="`/api/agents`" Fieldname="agent" option_fieldName="agent_full_name" :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
         />
 
         <!-- <EditableBadgeSelect label="Agent Name" :valueName="opportunity.agent_full_name" /> -->
         <EditableBadgeField label="Company Name"  :value="opportunity.company_name" @update:value="updateOpportunityField"
-        opportunityFieldname="company_name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"/>
+        Fieldname="company_name"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"/>
         <EditableBadgeSelect label="Stage" :value="opportunity.stage" :valueName="opportunity.stage" 
-        @update:value="updateOpportunityField" opportunityFieldname="stage" fieldName="stage" :editUrl="`/deal/opportunity/${opportunity.uuid}/`" />      
+        @update:value="updateOpportunityField" Fieldname="stage" option_fieldName="stage" :editUrl="`/deal/opportunity/${opportunity.uuid}/`" />      
       </div>
     </div>
-    
-    <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details" @update:fieldValue="updateOpportunityField"
-      opportunityFieldname="opportunity_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
-    />
+    <div class="mx-2 mx-lg-5 d-flex flex-column gap-4">
+      <EditableCardField fieldTitle="Opportunity Details" :fieldValue="opportunity.opportunity_details" @update:fieldValue="updateOpportunityField"
+        Fieldname="opportunity_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+      />
 
-    <EditableCardField fieldTitle="Company Details" :fieldValue="opportunity.company_details" @update:fieldValue="updateOpportunityField"
-      opportunityFieldname="company_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
-    />
+      <EditableCardField fieldTitle="Company Details" :fieldValue="opportunity.company_details" @update:fieldValue="updateOpportunityField"
+        Fieldname="company_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+      />
 
-    <EditableCardField fieldTitle="Contact Details" :fieldValue="opportunity.contact_details" @update:fieldValue="updateOpportunityField"
-      opportunityFieldname="contact_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
-    />
+      <EditableCardField fieldTitle="Contact Details" :fieldValue="opportunity.contact_details" @update:fieldValue="updateOpportunityField"
+        Fieldname="contact_details"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+      />
 
-    <EditableCardField fieldTitle="Additional Info" :fieldValue="opportunity.additional_info" @update:fieldValue="updateOpportunityField"
-      opportunityFieldname="additional_info"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
-    />
+      <EditableCardField fieldTitle="Additional Info" :fieldValue="opportunity.additional_info" @update:fieldValue="updateOpportunityField"
+        Fieldname="additional_info"   :editUrl="`/deal/opportunity/${opportunity.uuid}/`"
+      />
+    </div>
 
-    <div class="mb-3 mb-lg-5 mx-2 mx-lg-5">
+    <div class="mb-3 mb-lg-5 mx-2 mx-lg-5 my-4">
       <div class="row mb-3">
           <div class="col-12 col-lg-6">
             <input class="d-none form-control" id="fileInput" type="file" ref="fileInput" multiple @change="handleFileChange">

@@ -1,6 +1,6 @@
 <template>
 
-<div class="mb-2 mb-lg-3">
+<div>
 	<div class="text-muted text-dark text-start "> 
 		
 		<div v-if="!editing" class="d-flex">
@@ -36,7 +36,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 		props: {
 			label: String,
 			value: String, 
-			opportunityFieldname: String,
+			Fieldname: String,
     		editUrl: String,
 		},
 
@@ -52,6 +52,7 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 					this.cancelEdit();
 				} else {
 					this.editing = true;
+					console.log("E T : ", this.editedValue)
 				}
 			},
 
@@ -62,14 +63,14 @@ import EditFieldMixin from '@/mixins/editFieldMixin.js';
 				console.log(this.editedValue);
 
 				try {
-				 	await this.editField(this.editUrl, this.opportunityFieldname, this.editedValue);
+				 	await this.editField(this.editUrl, this.Fieldname, this.editedValue);
 					this.editing = false;
 				} catch (error) {
 					console.error(error);
 				}
 			},
 			editSuccess(){
-				this.$emit('update:value', this.editedValue,this.opportunityFieldname);
+				this.$emit('update:value', this.editedValue,this.Fieldname);
 			},
 			
 			cancelEdit() {

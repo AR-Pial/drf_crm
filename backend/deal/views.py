@@ -90,9 +90,19 @@ class OpportunityViewSet(ModelViewSet):
     
 # Proposal
 class ProposalViewSet(ModelViewSet):
-    queryset = Proposal.objects.all()
     serializer_class = ProposalSerializer
     lookup_field = 'uuid' 
+
+    def get_queryset(self):
+        queryset = Proposal.objects.all()  # Default: Return all proposals
+        opportunity_uuid = self.request.query_params.get('opportunity_uuid')  # Extract query parameter
+        if opportunity_uuid:  # Filter only if the parameter is provided
+            queryset = queryset.filter(opportunity__uuid=opportunity_uuid)
+        return queryset
+
+    # def perform_create(self, serializer):
+    #     # Assign the authenticated user as `created_by`
+    #     serializer.save(created_by=self.request.user)
     
     
     

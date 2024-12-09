@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div>
+      <h5 class="py-2 py-lg-3 text-success">{{ opportunityName }}</h5>
+    </div>
     <div class="col-12 col-lg-10 mx-auto my-3">
       <!-- Include the CreateProposal component -->
       <create-proposal ref="createProposalRef"></create-proposal>
@@ -8,20 +11,22 @@
             Proposals
         </template>
         <template v-slot:header>
-          <th>Name</th>
-          <th>Company Name</th>
-          <th>Stage</th>
-          <th>Details</th>
+          <th>Title</th>
+          <th>Remarks</th>
+          <th>#</th>
           <th>Action</th>
         </template>
 
         <template v-slot:body>
-            <tr>
-              <td>ok</td>
-              <td>ok</td>
-              <td>ok</td>
-              <td>ok</td>
-              <td>ok</td>
+            <tr v-for="proposal in proposals" :key="proposal.uuid">
+              <td>{{ proposal.title }}</td>
+              <td>{{ proposal.remarks }}</td>
+              <td>
+                <router-link :to="{ name: 'proposal-details', params: { uuid: proposal.uuid } }">
+                  Details
+                </router-link>
+              </td>
+              <td><a href="">Edit</a> / <a href="">delete</a></td>
             </tr>
         </template>
       </table-helper>
@@ -33,6 +38,7 @@
 <script>
 import TableHelper from '@/components/helpers/TableHelper.vue';
 import CreateProposal from './CreateProposal.vue';
+import { endpoints } from '@/api';
 export default {
     components: {
         "table-helper": TableHelper,
@@ -40,9 +46,41 @@ export default {
     },
     data(){
       return{
+        opportunityName: '',
         addButtonName: "Add Proposal",
+        proposals: [],
+        opportunityUuid: this.$route.params.uuid,
       }
-    }
+    },
+    methods: {
+    fetchProposals() {
+      const url = `${endpoints.proposal}/?opportunity_uuid=${this.opportunityUuid}`;
+      this.$axios.get(url)
+        .then(response => {
+          this.proposals = response.data;
+          console.log(this.proposals)
+        })
+        .catch(error => {
+          console.error('Error fetching proposals:', error);
+        });
+    },
+    fetchOpportunityDetails() {
+    
+    const url = `${endpoints.opportunity}/${this.opportunityUuid}/`;
+    this.$axios.get(url)
+      .then(response => {
+        this.opportunityName = response.data.name;  // Assuming the response has a 'name' field
+        console.log(this.opportunityName )
+      })
+      .catch(error => {
+        console.error('Error fetching opportunity details:', error);
+      });
+    },
+  },
+  mounted() {
+    this.fetchOpportunityDetails();
+    this.fetchProposals();
+  },
 }
 </script>
 

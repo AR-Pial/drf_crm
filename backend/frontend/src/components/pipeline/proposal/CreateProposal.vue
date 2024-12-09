@@ -81,6 +81,11 @@ export default {
         if (this.newProposal.file) {
           formData.append('file', this.newProposal.file);
         }
+        console.log(this.newProposal)
+        for (let pair of formData.entries()) {
+          console.log(pair[0]+ ': ' + pair[1]);
+        }
+
 
         // Send the FormData object in the POST request
         const response = await this.$axios.post('/deal/proposal/', formData, {

@@ -19,9 +19,10 @@ class OpportunitySerializer(ModelSerializer):
       read_only_fields = ('uuid',)
 
 class ProposalSerializer(serializers.ModelSerializer):
+      opportunity_name = serializers.CharField(source='opportunity.name', read_only=True)
       class Meta:
             model = Proposal
-            fields = ['uuid', 'opportunity', 'title', 'details', 'remarks'] 
+            fields = ['uuid', 'opportunity','opportunity_name', 'title', 'details', 'remarks'] 
             read_only_fields = ('uuid',)
       #    extra_kwargs = {
       #          'opportunity': {'required': False, 'allow_null': True},
