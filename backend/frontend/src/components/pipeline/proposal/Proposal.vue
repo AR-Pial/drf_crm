@@ -6,6 +6,7 @@
     <div class="col-12 col-lg-10 mx-auto my-3">
       <!-- Include the CreateProposal component -->
       <create-proposal ref="createProposalRef"></create-proposal>
+      <edit-proposal ref="createProposalRef"></edit-proposal>
       <table-helper :add-button-name="addButtonName">
         <template v-slot:table-name>
             Proposals
@@ -26,7 +27,7 @@
                   Details
                 </router-link>
               </td>
-              <td><a href="">Edit</a> / <a href="">delete</a></td>
+              <td><a href="" data-bs-toggle="modal" data-bs-target="#editModal">Edit</a> / <a href="">delete</a></td>
             </tr>
         </template>
       </table-helper>
@@ -38,11 +39,13 @@
 <script>
 import TableHelper from '@/components/helpers/TableHelper.vue';
 import CreateProposal from './CreateProposal.vue';
+import EditProposal from './EditProposal.vue';
 import { endpoints } from '@/api';
 export default {
     components: {
         "table-helper": TableHelper,
         "create-proposal": CreateProposal,
+        "edit-proposal": EditProposal
     },
     data(){
       return{

@@ -110,7 +110,7 @@
 
       <edit-modal-helper ref="editModalHelper" :edit-modal-header-name="editModalHelper">
         <template v-slot:body>
-          <form-helper @editSubmitForm="editSubmitForm">
+          <form-helper>
               <template v-slot:body>
                 <div class="mb-3 row">
                     <div class="col-12 col-lg-6"> 
@@ -366,7 +366,7 @@
           });
       },
 
-      async editSubmitForm(){
+      async oppEditSubmitForm(){
         const editedOpportunityData = {
         name: this.opportunity.name,
         company_name: this.opportunity.company_name,

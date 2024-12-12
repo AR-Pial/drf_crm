@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Use the CreateModalHelper component -->
-    <create-modal-helper ref="createProposalModal" :modalHeaderName="'Add New Proposal'" @submitForm="submitProposal">
+    <create-modal-helper ref="createProposalModal" modalHeaderName="Add New Proposal" @submitForm="submitProposal">
       <template v-slot:body>
         <form>
           <!-- Use InputFields for each field in the form -->
