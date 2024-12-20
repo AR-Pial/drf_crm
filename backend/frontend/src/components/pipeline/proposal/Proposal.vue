@@ -5,8 +5,8 @@
     </div>
     <div class="col-12 col-lg-10 mx-auto my-3">
       <!-- Include the CreateProposal component -->
-      <create-proposal ref="createProposalRef"></create-proposal>
-      <edit-proposal ref="editProposalRef"></edit-proposal>
+      <create-proposal ref="createProposalRef" @proposalCreated="refreshProposals"></create-proposal>
+      <edit-proposal ref="editProposalRef" @proposalUpdated="refreshProposals"></edit-proposal>
       <table-helper :add-button-name="addButtonName">
         <template v-slot:table-name>
             Proposals
@@ -68,6 +68,9 @@ export default {
         .catch(error => {
           console.error('Error fetching proposals:', error);
         });
+    },
+    refreshProposals() {
+      this.fetchProposals(); // Refresh the list of proposals or take other actions
     },
     fetchOpportunityDetails() {
       const url = `${endpoints.opportunity}/${this.opportunityUuid}/`;

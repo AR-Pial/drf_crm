@@ -95,6 +95,7 @@ export default {
         });
 
         console.log('Proposal created:', response.data);
+        this.$emit('proposalCreated');
         this.resetForm(); // Reset the form fields
         this.$refs.createProposalModal.closeModal(); // Close the modal
       } catch (error) {

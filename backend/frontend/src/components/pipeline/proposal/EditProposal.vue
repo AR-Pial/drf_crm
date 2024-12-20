@@ -1,7 +1,7 @@
 <template>
     <div>
       <!-- Use the CreateModalHelper component -->
-      <edit-modal-helper ref="editProposalModal" editModalHeaderName="Edit Proposal" @submitForm="submitProposal">
+      <edit-modal-helper ref="editProposalModal" editModalHeaderName="Edit Proposal" @submitForm="updateProposal">
         <template v-slot:body>
           <form>
             <!-- Use InputFields for each field in the form -->
@@ -41,7 +41,7 @@
   <script>
   import EditModalHelper from '@/components/helpers/EditModalHelper.vue';
   import InputFields from '@/components/fields/InputField.vue'; // Import InputFields
-  
+  import { endpoints } from '@/api';
   export default {
     components: {
       "edit-modal-helper": EditModalHelper,
@@ -63,6 +63,41 @@
         ]
       };
     },
+    methods: {
+      async updateProposal() {
+        console.log("submit edit" + this.editProposal.uuid);
+        try {
+          const formData = new FormData();
+          formData.append('title', this.editProposal.title);
+          formData.append('details', this.editProposal.details);
+          formData.append('remarks', this.editProposal.remarks);
+          if (this.editProposal.file) {
+            formData.append('file', this.editProposal.file);
+          }
+
+          const url = `${endpoints.proposal}/${this.editProposal.uuid}/`;
+          const response = await this.$axios.put(url, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          });
+          console.log("Response : ", response)
+          this.$emit('proposalUpdated');
+          this.resetForm();
+          this.$refs.editProposalModal.closeModal();
+          
+        } catch (error) {
+          console.error('Error updating proposal:', error);
+        }
+      },
+      resetForm() {
+        // Reset the form fields to their initial state
+        this.editProposal = {
+          title: '',
+          details: '',
+          remarks: '',
+          file: null // Reset file as well
+        };
+      }
+    }
 
   };
   </script>
@@ -71,49 +106,6 @@
   /* Add any custom styles for CreateProposal */
   </style>
 
-  <!-- methods: {
-     
-     async submitProposal() {
-       try {
-         const opportunityUuid = this.$route.params.uuid;
-         const formData = new FormData();
-         formData.append('title', this.editProposal.title);
-         formData.append('details', this.editProposal.details);
-         formData.append('remarks', this.editProposal.remarks);
-         formData.append('opportunity', opportunityUuid);
-         
-         // Append the file if it exists
-         if (this.editProposal.file) {
-           formData.append('file', this.editProposal.file);
-         }
-         console.log(this.editProposal)
-         for (let pair of formData.entries()) {
-           console.log(pair[0]+ ': ' + pair[1]);
-         }
- 
- 
-         // Send the FormData object in the POST request
-         const response = await this.$axios.post('/deal/proposal/', formData, {
-           headers: {
-             'Content-Type': 'multipart/form-data'
-           }
-         });
- 
-         console.log('Proposal created:', response.data);
-         this.resetForm(); // Reset the form fields
-         this.$refs.editProposalModal.closeModal(); // Close the modal
-       } catch (error) {
-         console.error('Error creating proposal:', error);
-       }
-     },
-     resetForm() {
-       // Reset the form fields to their initial state
-       this.editProposal = {
-         title: '',
-         details: '',
-         remarks: '',
-         file: null // Reset file as well
-       };
-     }
-   } -->
+  
+   
   

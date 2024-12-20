@@ -45,7 +45,7 @@
 	  },
 	  handleSubmit() {
 		// Emit the submit event or call the parent component's oppEditSubmitForm method
-		console.log('Submit button clicked');
+		
 		if(this.$parent.oppEditSubmitForm){
 			this.$parent.oppEditSubmitForm();
 		}
